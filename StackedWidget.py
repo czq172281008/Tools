@@ -14,6 +14,7 @@ from PyQt5.QtWidgets import *
 
 import CreatWidget
 from CreatWidget import Example
+from Test import Ui_Form
 
 
 class StackedExample(QWidget):
@@ -41,6 +42,14 @@ class StackedExample(QWidget):
         self.stack2 = QWidget()
         self.stack3 = QWidget()
 
+        #引用单独QTDesigner绘制窗体文件
+        QW = QWidget()
+        aa=Ui_Form()
+        aa.setupUi(QW)# 将子页面添加到对应控件QW变量
+
+
+        ex = Example()
+
 
         self.stack1UI()
         self.stack2UI()
@@ -51,7 +60,7 @@ class StackedExample(QWidget):
         self.Stack.addWidget(self.stack1)
         self.Stack.addWidget(self.stack2)
         self.Stack.addWidget(self.stack3)
-        self.Stack.addWidget(Example())
+        self.Stack.addWidget(QW)#加入QTDesigner绘制窗体
 
         hbox = QHBoxLayout(self)#水平布局
         hbox.addWidget(self.leftlist)#左侧菜单
