@@ -1,20 +1,13 @@
 # -*- coding: utf-8 -*-
 
-'''
-    【简介】
-	PyQt5中 QStackedWidget 例子
-
-
-'''
-
 import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 import CreatWidget
-from CreatWidget import Example
-from Test import Ui_Form
+from CreatWidget import Ui_Form
+
 
 
 class StackedExample(QWidget):
@@ -25,14 +18,24 @@ class StackedExample(QWidget):
         self.move(0, 0)
         self.resize(screen.width(), screen.height()-70)
         #窗口名称
-        self.setWindowTitle("万能工具集")
+        self.setWindowTitle("共享运维工具集V1.0")
 
         self.leftlist = QListWidget()
 
         self.leftlist.insertItem(0, '单据信息')
         self.leftlist.insertItem(1, '用户信息')
         self.leftlist.insertItem(2, '流程信息')
-        self.leftlist.insertItem(3, '测试窗体')
+        self.leftlist.insertItem(3, 'QT窗体')
+        self.leftlist.insertItem(4, '手敲窗体')
+
+        self.leftlist.setSpacing(2) #设置内边距---控件之间的距离
+
+        #self.leftlist.setContentsMargins(200, 40, 40, 50)  # 设置外边距--控件到窗口边框的距离
+        # 这是QLayout的指令
+        # 参数1 左边距离
+        # 参数2 上边距离
+        # 参数3 右边距离
+        # 参数4 下边距离
 
         #绝对布局
         # self.leftlist.move(55,20)
@@ -47,8 +50,8 @@ class StackedExample(QWidget):
         aa=Ui_Form()
         aa.setupUi(QW)# 将子页面添加到对应控件QW变量
 
-
-        ex = Example()
+        # 自定义手敲窗体
+        #Ex = Example()
 
 
         self.stack1UI()
@@ -60,14 +63,29 @@ class StackedExample(QWidget):
         self.Stack.addWidget(self.stack1)
         self.Stack.addWidget(self.stack2)
         self.Stack.addWidget(self.stack3)
+        #self.Stack.addWidget(Ex)
         self.Stack.addWidget(QW)#加入QTDesigner绘制窗体
 
-        hbox = QHBoxLayout(self)#水平布局
-        hbox.addWidget(self.leftlist)#左侧菜单
-        #控件伸缩量
-        #hbox.addStretch(4)
-        hbox.addWidget(self.Stack,1,Qt.AlignLeft)#右侧面板
-        self.setLayout(hbox)
+        mainLayout = QHBoxLayout(self)
+        #mainLayout.setMargins(5)  #对话框边距设为5 Margin 边距  5px
+        # mainLayout.setSpacing(5)  #内部控件间距为5 Spacing间距  5px
+
+        # addWidget参数2 伸缩因子：就是占用的份数(倍数)；总的分成6份，label1占1份，label2占2份，label3占3份
+        # 0  不伸缩
+        mainLayout.addWidget(self.leftlist,1,Qt.AlignLeft)
+        mainLayout.addWidget(self.Stack,0)
+        # #layout.addStretch(2)  #添加空白伸缩因子
+        # #注意：这个空白伸缩可以压缩成0；只有足够大时才有效
+        mainLayout.setStretchFactor(self.leftlist,1)
+        mainLayout.setStretchFactor(self.Stack,10)  # 设定了leftlist与Stack比例为1:10。
+
+        # hbox = QHBoxLayout(self)#水平布局
+        # hbox.addWidget(self.leftlist)#左侧菜单
+        # #控件伸缩量
+        # #hbox.addStretch(4)
+        # #hbox.addWidget(self.Stack,1,Qt.AlignLeft)#右侧面板
+        # hbox.addWidget(self.Stack)  # 右侧面板
+        # self.setLayout(hbox)
         self.leftlist.currentRowChanged.connect(self.display)
 
     def stack1UI(self):
