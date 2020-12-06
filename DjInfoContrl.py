@@ -1,30 +1,31 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
+
+from PyQt5.QtCore import pyqtSignal, QThread
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox, QWidget
 import DjInfo
 
 #继承页面DjInfo.Ui_Form
-class ControlCode(QMainWindow, DjInfo.Ui_Form):
+class ControlCode(QWidget,DjInfo.Ui_Form):
+    sendmsg = pyqtSignal(object)
+
     def __init__(self):
-        QMainWindow.__init__(self)
+        QWidget.__init__(self)
         DjInfo.Ui_Form.__init__(self)
         self.setupUi(self)
         self.bt_Search.clicked.connect(self.on_save)
-        #self.btn_open.clicked.connect(self.on_open)
+
 
     def on_save(self):
-        FullFileName, _ = QFileDialog.getSaveFileName(self, '文件另存为', r'./', 'TXT (*.txt)')
-        set_text = self.txt_view.toPlainText()
-        with open(FullFileName, 'wt') as f:
-            print(set_text, file=f)
+        if(self.F_DJBH.text()==''):
+            QMessageBox.information(self, "单据编号",
+                                self.tr("单据编号为空"))
 
-    def on_open(self):
-        txtstr = ""
-        FullFileName, _ = QFileDialog.getOpenFileName(self, '打开', r'./', 'TXT (*.txt)')
-        with open(FullFileName, 'rt') as f:
-            lines = f.readlines()
-            for line in lines:
-                txtstr = txtstr + line
-        self.txt_view.setText(txtstr)
+class BackendThread(QThread):
+    Sign = pyqtSignal(object)
+    def run(self):
+        while True:
+            data = DjInfo.Ui_Form()
+            self.Sign.emit(data.bt_Search.clicked)
 
 
 if __name__ == '__main__':

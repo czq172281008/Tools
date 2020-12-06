@@ -5,8 +5,9 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from DjInfo import Ui_Form
-
+from DjInfoContrl import ControlCode
+import os
+os.environ['NLS_LANG'] = 'SIMPLIFIED CHINESE_CHINA.UTF8'#处理结果集乱码
 
 
 class StackedExample(QWidget):
@@ -27,10 +28,10 @@ class StackedExample(QWidget):
         self.leftlist = QListWidget()
 
         self.leftlist.insertItem(0, '单据信息')
-        self.leftlist.insertItem(1, '用户信息')
-        self.leftlist.insertItem(2, '流程信息')
-        self.leftlist.insertItem(3, 'QT窗体')
-        self.leftlist.insertItem(4, '手敲窗体')
+        # self.leftlist.insertItem(1, '用户信息')
+        # self.leftlist.insertItem(2, '流程信息')
+        # self.leftlist.insertItem(1, 'QT窗体')
+        # self.leftlist.insertItem(2, '手敲窗体')
 
         self.leftlist.setSpacing(2)  # 设置内边距---控件之间的距离
 
@@ -45,28 +46,28 @@ class StackedExample(QWidget):
         # self.leftlist.move(55,20)
         # self.leftlist.resize(55, 20)
 
-        self.stack1 = QWidget()
-        self.stack2 = QWidget()
-        self.stack3 = QWidget()
+        self.stack1 = ControlCode()
+        # self.stack2 = QWidget()
+        # self.stack3 = QWidget()
 
         # 引用单独QTDesigner绘制窗体文件
-        QW = QWidget()
-        DjinfoW = Ui_Form()
-        DjinfoW.setupUi(QW)  # 将子页面添加到对应控件QW变量
+        # QW = QWidget()
+        # DjinfoW = ControlCode()
+        # DjinfoW.setupUi(QW)  # 将子页面添加到对应控件QW变量
 
         # 自定义手敲窗体
         # Ex = Example()
 
-        self.stack1UI()
-        self.stack2UI()
-        self.stack3UI()
+        # self.stack1UI()
+        # self.stack2UI()
+        # self.stack3UI()
 
         self.Stack = QStackedWidget(self)
         self.Stack.addWidget(self.stack1)
-        self.Stack.addWidget(self.stack2)
-        self.Stack.addWidget(self.stack3)
+        # self.Stack.addWidget(self.stack2)
+        # self.Stack.addWidget(self.stack3)
         # self.Stack.addWidget(Ex)
-        self.Stack.addWidget(QW)  # 加入QTDesigner绘制窗体
+        # self.Stack.addWidget(QW)  # 加入QTDesigner绘制窗体
 
         mainLayout = QHBoxLayout(self)
         # mainLayout.setMargins(5)  #对话框边距设为5 Margin 边距  5px
@@ -90,7 +91,6 @@ class StackedExample(QWidget):
         # self.setLayout(hbox)
 
         self.leftlist.currentRowChanged.connect(self.display)
-        DjinfoW.bt_Search.clicked.connect(self.DjQurey)  # 单据信息查询方法
 
     def stack1UI(self):
         layout = QFormLayout()
@@ -117,14 +117,11 @@ class StackedExample(QWidget):
     def display(self, i):
         self.Stack.setCurrentIndex(i)
 
-    def DjQurey(self):
-        # if(DjinfoW.F_DJBH.text()=="")
-            QMessageBox.information(self, "单据编号",
-                                    self.tr("单据编号为空!"))
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     demo = StackedExample()
     demo.show()
-    sys.exit(app.exec_())
+    app.exec_()
+    sys.exit()
