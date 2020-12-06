@@ -4,7 +4,6 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QFont, QIcon, QKeySequence
 
 from StackedWidget import StackedExample
-from Test import Ui_Form
 
 
 class MdiSubWindow(QMdiSubWindow):

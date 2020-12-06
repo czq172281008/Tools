@@ -13,12 +13,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
+        Form.setEnabled(True)
         Form.resize(1126, 856)
-        self.tableWidget = QtWidgets.QTableWidget(Form)
-        self.tableWidget.setGeometry(QtCore.QRect(40, 170, 1031, 192))
-        self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(0)
-        self.tableWidget.setRowCount(0)
         self.groupBox = QtWidgets.QGroupBox(Form)
         self.groupBox.setGeometry(QtCore.QRect(40, 20, 351, 111))
         self.groupBox.setObjectName("groupBox")
@@ -41,6 +37,9 @@ class Ui_Form(object):
         self.bt_Search = QtWidgets.QPushButton(self.groupBox)
         self.bt_Search.setGeometry(QtCore.QRect(260, 50, 75, 20))
         self.bt_Search.setObjectName("bt_Search")
+        self.DataTable = QtWidgets.QTableView(Form)
+        self.DataTable.setGeometry(QtCore.QRect(40, 150, 981, 192))
+        self.DataTable.setObjectName("DataTable")
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)

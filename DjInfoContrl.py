@@ -2,6 +2,8 @@ import sys
 
 from PyQt5.QtCore import pyqtSignal, QThread
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox, QWidget
+
+import QTableInfo
 import DjInfo
 
 #继承页面DjInfo.Ui_Form
@@ -11,7 +13,9 @@ class ControlCode(QWidget,DjInfo.Ui_Form):
     def __init__(self):
         QWidget.__init__(self)
         DjInfo.Ui_Form.__init__(self)
+
         self.setupUi(self)
+        self.DataTable.setVisible(False)
         self.bt_Search.clicked.connect(self.on_save)
 
 
@@ -19,6 +23,11 @@ class ControlCode(QWidget,DjInfo.Ui_Form):
         if(self.F_DJBH.text()==''):
             QMessageBox.information(self, "单据编号",
                                 self.tr("单据编号为空"))
+        else:
+            self.DataTable.setVisible(True)
+            QMessageBox.information(self, "单据编号",
+                                    self.tr("哈哈"))
+
 
 class BackendThread(QThread):
     Sign = pyqtSignal(object)
