@@ -23,11 +23,14 @@ class StackedExample(QWidget):
         self.move(0, 0)
         self.resize(screen.width(), screen.height() - 70)
         # 窗口名称
+
+
+
+
         self.setWindowTitle("共享运维工具集V1.0")
-
         self.leftlist = QListWidget()
-
         self.leftlist.insertItem(0, '单据信息')
+
         # self.leftlist.insertItem(1, '用户信息')
         # self.leftlist.insertItem(2, '流程信息')
         # self.leftlist.insertItem(1, 'QT窗体')
@@ -52,7 +55,7 @@ class StackedExample(QWidget):
 
         # 引用单独QTDesigner绘制窗体文件
         # QW = QWidget()
-        # DjinfoW = ControlCode()
+        #DjinfoW = ControlCode()
         # DjinfoW.setupUi(QW)  # 将子页面添加到对应控件QW变量
 
         # 自定义手敲窗体
@@ -62,12 +65,17 @@ class StackedExample(QWidget):
         # self.stack2UI()
         # self.stack3UI()
 
+        mainSplitter = QSplitter(Qt.Horizontal)
+        self.Stack = QStackedWidget(mainSplitter)
+        self.Stack.setFrameStyle(QFrame.Panel | QFrame.Raised)
         self.Stack = QStackedWidget(self)
         self.Stack.addWidget(self.stack1)
         # self.Stack.addWidget(self.stack2)
         # self.Stack.addWidget(self.stack3)
         # self.Stack.addWidget(Ex)
         # self.Stack.addWidget(QW)  # 加入QTDesigner绘制窗体
+
+
 
         mainLayout = QHBoxLayout(self)
         # mainLayout.setMargins(5)  #对话框边距设为5 Margin 边距  5px

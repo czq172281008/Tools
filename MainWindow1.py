@@ -1,8 +1,11 @@
+
 import sys
 from PyQt5 import QtWidgets,QtCore
 
+from SpliterQW import mainWindow
 
-class mainWindow(QtWidgets.QWidget):
+
+class mainWindow(QtWidgets.QMainWindow):
 
     def __init__(self, parent=None):
         super(mainWindow, self).__init__(parent)
@@ -12,7 +15,22 @@ class mainWindow(QtWidgets.QWidget):
         self.resize(800, 600)
         self.center()
         self.setWindowTitle('套利交易监控')
-
+        # 菜单栏
+        menu_control = self.menuBar().addMenu('菜单')
+        # 开始
+        act_start = menu_control.addAction('开始')
+        act_start.triggered.connect(self.StartRun)
+        # 退出
+        act_quit = menu_control.addAction('退出')
+        act_quit.triggered.connect(self.close)
+        # 帮助(版权关于)
+        menu_help = self.menuBar().addMenu('帮助')
+        act_about = menu_help.addAction('版权')
+        act_about.triggered.connect(self.about)
+        act_aboutqt = menu_help.addAction('关于')
+        act_aboutqt.triggered.connect(self.aboutqt)
+        # 状态栏
+        self.statusBar().showMessage('程序已经就绪...')
         #######################  布局   #####################
         splitter1 = QtWidgets.QSplitter(QtCore.Qt.Vertical)  # 第一列布局（AH，商品（长期），回购）
         splitter2 = QtWidgets.QSplitter(QtCore.Qt.Vertical)  # 第二列布局（50,300,500，T-TF，玉米）
@@ -29,16 +47,16 @@ class mainWindow(QtWidgets.QWidget):
         Modules9 = QtWidgets.QTableWidget(8, 9)
         Modules10 = QtWidgets.QTableWidget(4, 5)
 
-        Modules1.setFrameStyle(QtWidgets.QFrame.Box | QtWidgets.QFrame.Plain)
-        Modules2.setFrameStyle(QtWidgets.QFrame.Box | QtWidgets.QFrame.Plain)
-        Modules3.setFrameStyle(QtWidgets.QFrame.Box | QtWidgets.QFrame.Plain)
-        Modules4.setFrameStyle(QtWidgets.QFrame.Box | QtWidgets.QFrame.Plain)
-        Modules5.setFrameStyle(QtWidgets.QFrame.Box | QtWidgets.QFrame.Plain)
-        Modules6.setFrameStyle(QtWidgets.QFrame.Box | QtWidgets.QFrame.Plain)
-        Modules7.setFrameStyle(QtWidgets.QFrame.Box | QtWidgets.QFrame.Plain)
-        Modules8.setFrameStyle(QtWidgets.QFrame.Box | QtWidgets.QFrame.Plain)
-        Modules9.setFrameStyle(QtWidgets.QFrame.Box | QtWidgets.QFrame.Plain)
-        Modules10.setFrameStyle(QtWidgets.QFrame.Box | QtWidgets.QFrame.Plain)
+        Modules1.setFrameStyle(QtWidgets.QFrame.Box  | QtWidgets.QFrame.Plain)
+        Modules2.setFrameStyle(QtWidgets.QFrame.Box   |QtWidgets.QFrame.Plain)
+        Modules3.setFrameStyle(QtWidgets.QFrame.Box  | QtWidgets.QFrame.Plain)
+        Modules4.setFrameStyle(QtWidgets.QFrame.Box  | QtWidgets.QFrame.Plain)
+        Modules5.setFrameStyle(QtWidgets.QFrame.Box  | QtWidgets.QFrame.Plain)
+        Modules6.setFrameStyle(QtWidgets.QFrame.Box  | QtWidgets.QFrame.Plain)
+        Modules7.setFrameStyle(QtWidgets.QFrame.Box  | QtWidgets.QFrame.Plain)
+        Modules8.setFrameStyle(QtWidgets.QFrame.Box  | QtWidgets.QFrame.Plain)
+        Modules9.setFrameStyle(QtWidgets.QFrame.Box   |QtWidgets.QFrame.Plain)
+        Modules10.setFrameStyle(QtWidgets.QFrame.Box  | QtWidgets.QFrame.Plain)
 
         splitter1.addWidget(Modules1)
         splitter1.addWidget(Modules2)
@@ -113,7 +131,8 @@ class mainWindow(QtWidgets.QWidget):
         size = self.geometry()
         self.move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2)
 
-    def StartRun(self):  # 开始运行整个程序
+
+    def StartRun(self): # 开始运行整个程序
         pass
 
 
@@ -122,3 +141,12 @@ if __name__ == '__main__':
     mainwindow = mainWindow()
     mainwindow.show()
     sys.exit(myapp.exec_())
+
+
+
+
+
+
+
+
+
