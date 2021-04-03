@@ -11,12 +11,13 @@ from DjInfo import Ui_Form #单独QTDesigner绘制窗体文件
 import QTableInfo
 import ttt # abc
 import TableList
+from FORM.MainForm import Ui_MainWindow
 
-class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页面DjInfo.Ui_Form实现界面和逻辑分离
+class Test1(QWidget,Ui_MainWindow):#继承QTDesigner绘制窗体文件单独页面DjInfo.Ui_Form实现界面和逻辑分离
     sendmsg = pyqtSignal(object)
 
     def __init__(self, parent=None):
-        super(ControlCode, self).__init__(parent)#可替换成# QWidget.__init__(self) # QWidget.__init__(self)
+        super(Test1, self).__init__(parent)#可替换成# QWidget.__init__(self) # QWidget.__init__(self)
         # QWidget.__init__(self)
         # QWidget.__init__(self)
         # qb=QTableInfo.BookStorageViewer()
@@ -24,9 +25,6 @@ class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页�
 
         self.layout = QtWidgets.QGridLayout()
         self.setLayout(self.layout)
-
-        self.DataTable.setVisible(False)
-        self.bt_Search.clicked.connect(lambda: self.on_save())
 
 
     def on_save(self):
@@ -89,6 +87,6 @@ class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页�
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    md = ControlCode()
+    md = Test1()
     md.show()
     sys.exit(app.exec_())

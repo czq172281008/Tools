@@ -55,7 +55,7 @@ class StackedExample(QWidget):
 
         # 引用单独QTDesigner绘制窗体文件
         # QW = QWidget()
-        #DjinfoW = ControlCode()
+        # DjinfoW = ControlCode()
         # DjinfoW.setupUi(QW)  # 将子页面添加到对应控件QW变量
 
         # 自定义手敲窗体

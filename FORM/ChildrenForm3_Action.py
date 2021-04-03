@@ -1,4 +1,4 @@
-from ChildrenForm3 import Ui_Form3
+from FORM.ChildrenForm3 import Ui_Form3
 #界面与业务逻辑分离
 
 class ChildrenForm3_Busi(Ui_Form3):

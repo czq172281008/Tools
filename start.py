@@ -3,8 +3,23 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QFont, QIcon, QKeySequence
 
-from StackedWidget import StackedExample
 
+from StackedWidget import StackedExample
+from FORM.ChildrenForm2 import Ui_Form2
+from Testmainfile import Test1
+from FORM.mainfile import MainForm1
+
+
+# class ChildrenForm2(QWidget, MainForm1):
+#     def __init__(self):
+#         super(ChildrenForm2, self).__init__()
+#
+#         # 子窗口初始化时实现子窗口布局
+#         self.setupUi(self)
+#
+#         # 设置子窗体最小尺寸
+#         self.setMinimumWidth(30)
+#         self.setMinimumHeight(30)
 
 class MdiSubWindow(QMdiSubWindow):
     def __init__(self):
@@ -19,7 +34,11 @@ class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         # self.setAttribute(Qt.WA_DeleteOnClose)
+        # self.setupUi(self)
 
+        self.iniUI()
+
+    def iniUI(self):
         self.mdi = QMdiArea()  # 实例化Qmidarea区域
         self.setCentralWidget(self.mdi)  # 设置为中央窗口部件
         self.createFileActions()
@@ -39,6 +58,7 @@ class MainWindow(QMainWindow):
         self.resize(screen.width(), screen.height() - 70)
         self.setWindowTitle("共享运维工具集V1.0-czq")
 
+        # self.child2 = ChildrenForm2()
 
     def createAction(self, text, icon=None, checkable=False, slot=None, tip=None, shortcut=None):
         action = QAction(text, self)
@@ -69,11 +89,13 @@ class MainWindow(QMainWindow):
 
     def fileNew(self):
 
-        # QW = QWidget()
-        # aa=Ui_Form()
-        # aa.setupUi(QW)# 将子页面添加到对应控件QW变量
+        #QW = QWidget()
+        # aa=Ui_MainWindow()
+        # aa.setupUi()# 将子页面添加到对应控件QW变量
 
-        SE = StackedExample()#自定义子窗体
+        # SE = StackedExample()#自定义单独文件子窗体
+
+        SE =  MainForm1()#本类中窗体
 
         window = MdiSubWindow()  # 实例化多文档界面对象
         window.setWidget(SE)  # 设置sub内部部件
