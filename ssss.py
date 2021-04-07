@@ -1,45 +1,35 @@
-import sys
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+from PyQt5 import QtWidgets
 
-class SplitterExample(QWidget):
+
+class ApplicationWindow(QtWidgets.QMainWindow):
     def __init__(self):
-        super(SplitterExample, self).__init__()
-        self.initUI()
+        super().__init__()
 
-    def initUI( self ):
-        #设置全局布局为水平布局，设置标题与初始大小窗口
-        hbox=QHBoxLayout()
-        self.setWindowTitle("QSplitter例子")
-        self.setGeometry(300,300,500,700)
+        # self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.setWindowTitle("Main Window")
 
-        #实例化QFrame控件
-        topLeft=QFrame()
-        topLeft.setFrameShape(QFrame.StyledPanel)
+        self.main_widget = QtWidgets.QWidget(self)
+        self.main_widget.setFocus()
+        self.setCentralWidget(self.main_widget)
 
-        bottom=QFrame()
-        bottom.setFrameShape(QFrame.StyledPanel)
+        l = QtWidgets.QVBoxLayout(self.main_widget)
+        # sc = MyStaticMplCanvas(width=5, height=4, dpi=100)  # just some graph
+        # dc = MyDynamicMplCanvas(width=5, height=4, dpi=100) # another graph
+        # l.addWidget(sc)
+        # l.addWidget(dc)
 
-        #实例化QSplitter控件并设置初始为水平方向布局
-        splitter1=QSplitter(Qt.Horizontal)
-        textedit=QTextEdit()
+        # Snippet 3
+        x = QtWidgets.QHBoxLayout()         # self.main_widget) # new
+        b1 = QtWidgets.QPushButton("Test1") # new
+        b2 = QtWidgets.QPushButton("Test2") # new
+        x.addWidget(b1)                     # new   + b1
+        x.addWidget(b2)                     # new   + b2
 
-        #向Splitter内添加控件。并设置游戏的初始大小
-        splitter1.addWidget(topLeft)
-        splitter1.addWidget(textedit)
-        splitter1.setSizes([100,500])#布局分割比例
+        l.addLayout(x)                                                  # <----
 
-        #实例化Splitter管理器，添加控件到其中，设置垂直方向
-        splitter2=QSplitter(Qt.Vertical)
-        splitter2.addWidget(splitter1)
-        # splitter2.addWidget(bottom)
-
-        #设置窗体全局布局以及子布局的添加
-        hbox.addWidget(splitter2)
-        self.setLayout(hbox)
-if __name__ == '__main__':
-    app=QApplication(sys.argv)
-    demo=SplitterExample()
-    demo.show()
-    sys.exit(app.exec_())
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = ApplicationWindow()
+    MainWindow.show()
+    sys.exit(app.exec_())        

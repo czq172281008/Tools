@@ -2,19 +2,20 @@ from PyQt5.QtWidgets import (QMainWindow, QWidget, QApplication,
                              QToolBox, QPushButton, QLabel,
                              QTreeWidget, QTreeWidgetItem)
 from PyQt5.QtGui import QIcon, QPixmap
-from FORM.MainForm import Ui_MainWindow #路径改变修改依赖
+from FORM.MainForm import Ui_MainWindow
 from FORM.ChildrenForm import Ui_Form
 from FORM.ChildrenForm2 import Ui_Form2
 from FORM.ChildrenForm3_Action import ChildrenForm3_Busi
 from FORM.ChildrenForm4 import Ui_Form4
 import sys
+from treetable import *
 
-class MainForm1(QMainWindow, Ui_MainWindow):
+class MainForm(QMainWindow, Ui_Form):
     def __init__(self, parent=None):
-        super(MainForm1, self).__init__(parent)
+        super(MainForm, self).__init__(parent)
 
         # 主窗口初始化时实现主窗口布局
-        self.setupUi(self)# 初始化MainForm.Ui_MainWindow
+        self.setupUi(self)
 
         # 调用该类自己设定的初始化方法
         self.iniUI()
@@ -275,6 +276,6 @@ class ChildrenForm4(QWidget, Ui_Form4):
 if __name__ == "__main__":
 
     app = QApplication(sys.argv)
-    myshow = MainForm1()
+    myshow = MainForm()
     myshow.show()
     sys.exit(app.exec_())

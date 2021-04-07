@@ -80,6 +80,8 @@ class Example(QWidget):
         for form in forms:
             self.stackedWidget.addWidget(form)
 
+
+
         # 树节点监听事件 lambda用于给槽传参数
         self.tree.clicked.connect(lambda: self.onClicked(self.tree_item_text()))
 

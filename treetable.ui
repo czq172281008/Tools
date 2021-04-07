@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1046</width>
+    <height>887</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QSplitter" name="splitter">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>30</y>
+     <width>871</width>
+     <height>781</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <widget class="QTreeWidget" name="treeWidget">
+    <column>
+     <property name="text">
+      <string notr="true">1</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>新建列</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>节点2</string>
+     </property>
+    </column>
+    <item>
+     <property name="text">
+      <string>节点1</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>节点2</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget"/>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -6,8 +6,8 @@ from PyQt5.QtGui import QColor, QFont, QIcon, QKeySequence
 
 from StackedWidget import StackedExample
 from FORM.ChildrenForm2 import Ui_Form2
-from Testmainfile import Test1
-from FORM.mainfile import MainForm1
+
+from ddddd import *
 
 
 # class ChildrenForm2(QWidget, MainForm1):
@@ -95,11 +95,13 @@ class MainWindow(QMainWindow):
 
         # SE = StackedExample()#自定义单独文件子窗体
 
-        SE =  MainForm1()#本类中窗体
+        # SE =  MainForm1()#本类中窗体
+
+        SE =  TREEwindow()#本类中窗体
 
         window = MdiSubWindow()  # 实例化多文档界面对象
         window.setWidget(SE)  # 设置sub内部部件
-        window.resize(1000,1000)
+        window.resize(700,800)
         window.setWindowTitle('核弹 %d' % len(self.mdi.subWindowList()))  # 设置新建子窗口的标题
         # print(sub.windowTitle())
         self.mdi.addSubWindow(window)  # 将子窗口添加到Mdi区域
