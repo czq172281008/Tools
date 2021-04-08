@@ -1,15 +1,15 @@
-#程序窗体跳转
+#程序窗体跳转总管
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QApplication,
                              QToolBox, QPushButton, QLabel,
                              QTreeWidget, QTreeWidgetItem)
 from PyQt5.QtGui import QIcon, QPixmap
-from FORM.MainForm import Ui_MainWindow
-from FORM.ChildrenForm import Ui_Form
 from FORM.ChildrenForm2 import Ui_Form2
 from FORM.ChildrenForm3_Action import ChildrenForm3_Busi
 from FORM.ChildrenForm4 import Ui_Form4
+from FORM.RightEntity import RightEn
 import sys
-from treetable import *
+
+from treetable import *#窗体和逻辑分离
 
 class SwitchMainForm(QMainWindow, Ui_Form):
     def __init__(self, parent=None):
@@ -48,12 +48,12 @@ class SwitchMainForm(QMainWindow, Ui_Form):
         root.setIcon(0, icon)
 
         # 设置根节点的名称
-        root.setText(0, '第一节点')
-        root2.setText(0, '第二节点')
+        root.setText(0, '共享服务平台')
+        root2.setText(0, 'FMIS平台')
 
         # 给根节点设置备注和说明；相当于给根节点设置了一个新名字！后面信号与槽函数连接时可以通过这个“新名字”与槽函数连接。
-        root.setWhatsThis(0, '第一节点')
-        root2.setWhatsThis(0, '第二节点')
+        root.setWhatsThis(0, '共享服务平台')
+        root2.setWhatsThis(0, 'FMIS平台')
 
         # 为root节点设置子结点
         child11 = QTreeWidgetItem(root)
@@ -63,7 +63,7 @@ class SwitchMainForm(QMainWindow, Ui_Form):
 
         # 设置child1节点的图片
         icon2 = QIcon()
-        icon2.addPixmap(QPixmap("./Original Point.png"), QIcon.Normal)
+        icon2.addPixmap(QPixmap("./FORM/Point.png"), QIcon.Normal)
         child11.setIcon(0, icon2)
 
         child11.setText(0, 'child1')
@@ -117,13 +117,13 @@ class SwitchMainForm(QMainWindow, Ui_Form):
         self.splitter.addWidget(self.tree)
 
         # 主窗口初始化时实例化子窗口1和子窗口2
-        self.child = ChildrenForm()
+        self.RE = RightEn()
         self.child2 = ChildrenForm2()
         self.child3 = ChildrenForm3()
         self.child4 = ChildrenForm4()
 
         # 在主窗口的QSplitter里添加子窗口
-        self.splitter.addWidget(self.child)
+        self.splitter.addWidget(self.RE)
 
         # 设置分割器QSplitter初始化时各个子窗体的大小；下面是两个子窗体。
         self.splitter.setSizes([180, 700])
@@ -151,11 +151,11 @@ class SwitchMainForm(QMainWindow, Ui_Form):
         print(item.text(column), column)
         print(item.whatsThis(column))
 
-        if item.whatsThis(column) == '第一节点':
+        if item.whatsThis(column) == '共享服务':
             # 把QSplitter的指定位置的窗体从QSplitter中剥离
             self.splitter.widget(1).setParent(None)
             # 在QSplitter的指定位置载入新窗体，但要先用上面的“self.splitter.widget(1).setParent(None)”命令。
-            self.splitter.insertWidget(1, self.child)
+            self.splitter.insertWidget(1, self.RE)
             self.splitter.setStretchFactor(0, 0)  # 此函数用于设定：控件是否可伸缩。第一个参数用于指定控件的序号。第二个函数大于0时，表示控件可伸缩，小于0时，表示控件不可伸缩。
             self.splitter.setStretchFactor(1, 1)  # 此函数用于设定：控件是否可伸缩。第一个参数用于指定控件的序号。第二个函数大于0时，表示控件可伸缩，小于0时，表示控件不可伸缩。
             #  设置 QSplitter 分割器各部分最小化时的情况，设置为“False”意味着左右拉动分隔栏时各部分不会消失；此设置也可以在界面设计时在 QtDesigner 里设置。
@@ -178,7 +178,7 @@ class SwitchMainForm(QMainWindow, Ui_Form):
             self.splitter.setAutoFillBackground(True)
         elif item.whatsThis(column) == '第一节点_child3':
             self.splitter.widget(1).setParent(None)
-            self.splitter.insertWidget(1, self.child)
+            self.splitter.insertWidget(1, self.RE)
             self.splitter.setStretchFactor(0, 0)
             self.splitter.setStretchFactor(1, 1)
             self.splitter.setChildrenCollapsible(False)
@@ -190,7 +190,7 @@ class SwitchMainForm(QMainWindow, Ui_Form):
             self.splitter.setStretchFactor(1, 1)
             self.splitter.setChildrenCollapsible(False)
             self.splitter.setAutoFillBackground(True)
-        elif item.whatsThis(column) == '第二节点':
+        elif item.whatsThis(column) == 'FMIS平台':
             self.splitter.widget(1).setParent(None)
             self.splitter.insertWidget(1, self.child3)
             self.splitter.setStretchFactor(0, 0)
@@ -199,7 +199,7 @@ class SwitchMainForm(QMainWindow, Ui_Form):
             self.splitter.setAutoFillBackground(True)
         elif item.whatsThis(column) == '第二节点_child1':
             self.splitter.widget(1).setParent(None)
-            self.splitter.insertWidget(1, self.child)
+            self.splitter.insertWidget(1, self.RE)
             self.splitter.setStretchFactor(0, 0)
             self.splitter.setStretchFactor(1, 1)
             self.splitter.setChildrenCollapsible(False)
@@ -227,16 +227,16 @@ class SwitchMainForm(QMainWindow, Ui_Form):
             self.splitter.setAutoFillBackground(True)
 
 
-class ChildrenForm(QWidget, Ui_Form):
-    def __init__(self):
-        super(ChildrenForm, self).__init__()
-
-        # 子窗口初始化时实现子窗口布局
-        self.setupUi(self)
-
-        # 设置子窗体最小尺寸
-        self.setMinimumWidth(30)
-        self.setMinimumHeight(30)
+# class ChildrenForm(QWidget, Ui_Form):
+#     def __init__(self):
+#         super(ChildrenForm, self).__init__()
+#
+#         # 子窗口初始化时实现子窗口布局
+#         self.setupUi(self)
+#
+#         # 设置子窗体最小尺寸
+#         self.setMinimumWidth(30)
+#         self.setMinimumHeight(30)
 
 
 class ChildrenForm2(QWidget, Ui_Form2):
