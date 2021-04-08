@@ -4,6 +4,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QFont, QIcon, QKeySequence
 from SwitchWindow import SwitchMainForm
 
+#本类调用初始化或者单独类文件调用初始化
 # class ChildrenForm2(QWidget, MainForm1):
 #     def __init__(self):
 #         super(ChildrenForm2, self).__init__()
