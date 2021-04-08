@@ -13,7 +13,7 @@ os.environ['NLS_LANG'] = 'SIMPLIFIED CHINESE_CHINA.UTF8'#处理结果集乱码
 class StackedExample(QWidget):
 
     def __init__(self):
-        super(StackedExample, self).__init__()
+        super(StackedExample, self).__init__()#可替换成# QWidget.__init__(self) # QWidget.__init__(self)
         self.DrawMainUI()#初始化主窗体
 
 

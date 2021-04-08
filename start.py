@@ -2,13 +2,7 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QFont, QIcon, QKeySequence
-
-
-from StackedWidget import StackedExample
-from FORM.ChildrenForm2 import Ui_Form2
-
-from ddddd import *
-
+from SwitchWindow import SwitchMainForm
 
 # class ChildrenForm2(QWidget, MainForm1):
 #     def __init__(self):
@@ -33,9 +27,6 @@ class MainWindow(QMainWindow):
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-        # self.setAttribute(Qt.WA_DeleteOnClose)
-        # self.setupUi(self)
-
         self.iniUI()
 
     def iniUI(self):
@@ -93,11 +84,9 @@ class MainWindow(QMainWindow):
         # aa=Ui_MainWindow()
         # aa.setupUi()# 将子页面添加到对应控件QW变量
 
-        # SE = StackedExample()#自定义单独文件子窗体
-
         # SE =  MainForm1()#本类中窗体
 
-        SE =  TREEwindow()#本类中窗体
+        SE =  SwitchMainForm()#自定义单独文件子窗体
 
         window = MdiSubWindow()  # 实例化多文档界面对象
         window.setWidget(SE)  # 设置sub内部部件

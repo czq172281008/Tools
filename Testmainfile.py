@@ -17,7 +17,7 @@ class Test1(QWidget,Ui_MainWindow):#继承QTDesigner绘制窗体文件单独页�
     sendmsg = pyqtSignal(object)
 
     def __init__(self, parent=None):
-        super(Test1, self).__init__(parent)#可替换成# QWidget.__init__(self) # QWidget.__init__(self)
+        super(Test1, self).__init__(parent)#可替换成# super().__init__() # QWidget.__init__(self)
         # QWidget.__init__(self)
         # QWidget.__init__(self)
         # qb=QTableInfo.BookStorageViewer()
