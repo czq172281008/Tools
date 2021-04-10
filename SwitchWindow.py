@@ -7,6 +7,7 @@ from FORM.ChildrenForm2 import Ui_Form2
 from FORM.ChildrenForm3_Action import ChildrenForm3_Busi
 from FORM.ChildrenForm4 import Ui_Form4
 from FORM.RightEntity import RightEn
+from LeftTree import LTree
 import sys
 
 from treetable import *#窗体和逻辑分离
@@ -23,98 +24,100 @@ class SwitchMainForm(QMainWindow, Ui_Form):
 
     # 设定该类自己的初始化方法
     def iniUI(self):
-        # 创建一个QTreeWidget部件
-        self.tree = QTreeWidget()
 
-        # 设置部件的列数为1
-        self.tree.setColumnCount(1)
-
-        # 设置头部信息，因为上面设置列数为2，所以要设置两个标识符
-        # self.tree.setHeaderLabels(['节点名称'])
-
-        # 设置表头信息：隐藏表头
-        self.tree.setHeaderHidden(1)
-
-        # 设置root和root2为self.tree的子树，所以root和root2就是跟节点
-        root = QTreeWidgetItem(self.tree)
-        root2 = QTreeWidgetItem(self.tree)
-
-        # 设置root节点的打开/关闭状态下的不同的图片
-        icon = QIcon()
-        # 节点打开状态
-        icon.addPixmap(QPixmap("./FORM/folder open.png"), QIcon.Normal, QIcon.On)
-        # 节点关闭状态　　
-        icon.addPixmap(QPixmap("./FORM/folder closed.png"), QIcon.Normal, QIcon.Off)
-        root.setIcon(0, icon)
-
-        # 设置根节点的名称
-        root.setText(0, '共享服务平台')
-        root2.setText(0, 'FMIS平台')
-
-        # 给根节点设置备注和说明；相当于给根节点设置了一个新名字！后面信号与槽函数连接时可以通过这个“新名字”与槽函数连接。
-        root.setWhatsThis(0, '共享服务平台')
-        root2.setWhatsThis(0, 'FMIS平台')
-
-        # 为root节点设置子结点
-        child11 = QTreeWidgetItem(root)
-
-        # 给root节点的第一个子节点设置备注和说明；相当于给第一个节点设置了一个新名字！后面信号与槽函数连接时可以通过这个“新名字”与槽函数连接。
-        child11.setWhatsThis(0, '第一节点_child1')
-
-        # 设置child1节点的图片
-        icon2 = QIcon()
-        icon2.addPixmap(QPixmap("./FORM/Point.png"), QIcon.Normal)
-        child11.setIcon(0, icon2)
-
-        child11.setText(0, 'child1')
-        # child1.setText(1, 'name1')
-        child12 = QTreeWidgetItem(root)
-        # 设置child2节点的图片
-        child12.setIcon(0, icon2)
-        child12.setText(0, 'child2')
-
-        # 给root节点的第二个子节点设置备注和说明；相当于给第二个节点设置了一个新名字！后面信号与槽函数连接时可以通过这个“新名字”与槽函数连接。
-        child12.setWhatsThis(0, '第一节点_child2')
-
-        # child2.setText(1, 'name2')
-        child13 = QTreeWidgetItem(root)
-
-        # 设置child3节点的打开 / 关闭状态下的不同的图片
-        child13.setIcon(0, icon)
-
-        child13.setText(0, 'child3')
-
-        # 给root节点的第三个子节点设置备注和说明；相当于给第三个节点设置了一个新名字！后面信号与槽函数连接时可以通过这个“新名字”与槽函数连接。
-        child13.setWhatsThis(0, '第一节点_child3')
-
-        child134 = QTreeWidgetItem(child13)
-        # 设置child4节点的图片
-        child134.setIcon(0, icon2)
-        child134.setText(0, 'child4')
-
-        # 给root节点的第三个子节点的第一个子节点设置备注和说明；相当于给该节点设置了一个新名字！后面信号与槽函数连接时可以通过这个“新名字”与槽函数连接。
-        child134.setWhatsThis(0, '第一节点_child3_child4')
-
-        # child4.setText(1, 'name4')
-
-        # 为root2节点设置子结点
-        child21 = QTreeWidgetItem(root2)
-        child21.setText(0, 'child1')
-        child21.setWhatsThis(0, '第二节点_child1')
-        # child1.setText(1, 'name1')
-        child22 = QTreeWidgetItem(root2)
-        child22.setText(0, 'child2')
-        child22.setWhatsThis(0, '第二节点_child2')
-        # child2.setText(1, 'name2')
-        child23 = QTreeWidgetItem(root2)
-        child23.setText(0, 'child3')
-        child23.setWhatsThis(0, '第二节点_child3')
-        child234 = QTreeWidgetItem(child23)
-        child234.setText(0, 'child4')
-        child234.setWhatsThis(0, '第二节点_child3_child4')
-
+        # self.splitter.setGeometry(QtCore.QRect(10, 10, 700, 871))
+        # # 创建一个QTreeWidget部件
+        # self.tree = QTreeWidget()
+        #
+        # # 设置部件的列数为1
+        # self.tree.setColumnCount(1)
+        #
+        # # 设置头部信息，因为上面设置列数为2，所以要设置两个标识符
+        # # self.tree.setHeaderLabels(['节点名称'])
+        #
+        # # 设置表头信息：隐藏表头
+        # self.tree.setHeaderHidden(1)
+        #
+        # # 设置root和root2为self.tree的子树，所以root和root2就是跟节点
+        # root = QTreeWidgetItem(self.tree)
+        # root2 = QTreeWidgetItem(self.tree)
+        #
+        # # 设置root节点的打开/关闭状态下的不同的图片
+        # icon = QIcon()
+        # # 节点打开状态
+        # icon.addPixmap(QPixmap("./FORM/folder open.png"), QIcon.Normal, QIcon.On)
+        # # 节点关闭状态　　
+        # icon.addPixmap(QPixmap("./FORM/folder closed.png"), QIcon.Normal, QIcon.Off)
+        # root.setIcon(0, icon)
+        #
+        # # 设置根节点的名称
+        # root.setText(0, '共享服务平台')
+        # root2.setText(0, 'FMIS平台')
+        #
+        # # 给根节点设置备注和说明；相当于给根节点设置了一个新名字！后面信号与槽函数连接时可以通过这个“新名字”与槽函数连接。
+        # root.setWhatsThis(0, '共享服务平台')
+        # root2.setWhatsThis(0, 'FMIS平台')
+        #
+        # # 为root节点设置子结点
+        # child11 = QTreeWidgetItem(root)
+        #
+        # # 给root节点的第一个子节点设置备注和说明；相当于给第一个节点设置了一个新名字！后面信号与槽函数连接时可以通过这个“新名字”与槽函数连接。
+        # child11.setWhatsThis(0, '第一节点_child1')
+        #
+        # # 设置child1节点的图片
+        # icon2 = QIcon()
+        # icon2.addPixmap(QPixmap("./FORM/Point.png"), QIcon.Normal)
+        # child11.setIcon(0, icon2)
+        #
+        # child11.setText(0, 'child1')
+        # # child1.setText(1, 'name1')
+        # child12 = QTreeWidgetItem(root)
+        # # 设置child2节点的图片
+        # child12.setIcon(0, icon2)
+        # child12.setText(0, 'child2')
+        #
+        # # 给root节点的第二个子节点设置备注和说明；相当于给第二个节点设置了一个新名字！后面信号与槽函数连接时可以通过这个“新名字”与槽函数连接。
+        # child12.setWhatsThis(0, '第一节点_child2')
+        #
+        # # child2.setText(1, 'name2')
+        # child13 = QTreeWidgetItem(root)
+        #
+        # # 设置child3节点的打开 / 关闭状态下的不同的图片
+        # child13.setIcon(0, icon)
+        #
+        # child13.setText(0, 'child3')
+        #
+        # # 给root节点的第三个子节点设置备注和说明；相当于给第三个节点设置了一个新名字！后面信号与槽函数连接时可以通过这个“新名字”与槽函数连接。
+        # child13.setWhatsThis(0, '第一节点_child3')
+        #
+        # child134 = QTreeWidgetItem(child13)
+        # # 设置child4节点的图片
+        # child134.setIcon(0, icon2)
+        # child134.setText(0, 'child4')
+        #
+        # # 给root节点的第三个子节点的第一个子节点设置备注和说明；相当于给该节点设置了一个新名字！后面信号与槽函数连接时可以通过这个“新名字”与槽函数连接。
+        # child134.setWhatsThis(0, '第一节点_child3_child4')
+        #
+        # # child4.setText(1, 'name4')
+        #
+        # # 为root2节点设置子结点
+        # child21 = QTreeWidgetItem(root2)
+        # child21.setText(0, 'child1')
+        # child21.setWhatsThis(0, '第二节点_child1')
+        # # child1.setText(1, 'name1')
+        # child22 = QTreeWidgetItem(root2)
+        # child22.setText(0, 'child2')
+        # child22.setWhatsThis(0, '第二节点_child2')
+        # # child2.setText(1, 'name2')
+        # child23 = QTreeWidgetItem(root2)
+        # child23.setText(0, 'child3')
+        # child23.setWhatsThis(0, '第二节点_child3')
+        # child234 = QTreeWidgetItem(child23)
+        # child234.setText(0, 'child4')
+        # child234.setWhatsThis(0, '第二节点_child3_child4')
+        tree=LTree()
         # 给QSsplitter添加第一个窗体（QTreeWidget）
-        self.splitter.addWidget(self.tree)
+        self.splitter.addWidget(tree)
 
         # 主窗口初始化时实例化子窗口1和子窗口2
         self.RE = RightEn()
@@ -139,7 +142,7 @@ class SwitchMainForm(QMainWindow, Ui_Form):
         self.splitter.setAutoFillBackground(True)
 
         # QTreeWidget中每个Item的信号与槽的连接
-        self.tree.itemClicked['QTreeWidgetItem*', 'int'].connect(self.onClick)  # 点击（包括选中，也包括checkbox选择）
+        # self.tree.itemClicked['QTreeWidgetItem*', 'int'].connect(self.onClick)  # 点击（包括选中，也包括checkbox选择）
         # self.tree.itemPressed['QTreeWidgetItem*', 'int'].connect(self.onClick)  # 点击选中（不包括checkbox选择）
         # self.tree.itemChanged['QTreeWidgetItem*', 'int'].connect(self.onClick)  # 状态变更就会响应，也包括程序置的状态，使用时需要注意
 
