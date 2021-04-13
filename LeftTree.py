@@ -1,4 +1,11 @@
-#左侧树结构 可以继承class LTree(QMainWindow)或 class LTree(QWidget)
+'''
+左侧树结构 可以继承class LTree(QMainWindow)或 class LTree(QWidget)
+利用自定义信号实现左侧树与右侧显示界面分离
+灵感来自于pyqt5高级编程CustomSignal.py
+pyqtSignal()
+
+'''
+
 import sys
 from PyQt5.QtWidgets import QApplication,QMessageBox,QComboBox,QHeaderView,QWidget,QVBoxLayout,QTreeWidget,QTreeWidgetItem,QAbstractItemView
 from PyQt5.QtGui import QIcon, QColor, QPixmap
