@@ -2,9 +2,13 @@
 import sys
 from PyQt5.QtWidgets import QApplication,QMessageBox,QComboBox,QHeaderView,QWidget,QVBoxLayout,QTreeWidget,QTreeWidgetItem,QAbstractItemView
 from PyQt5.QtGui import QIcon, QColor, QPixmap
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
+
 
 class LTree (QWidget):
+
+    sendmsg = pyqtSignal(QTreeWidgetItem,int)#定义信号准备发出
+
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -14,36 +18,6 @@ class LTree (QWidget):
         # self.setGeometry(300,300,300,200)
         layout=QVBoxLayout()#不加样式控件无法显示出来
         self.setLayout(layout)
-
-        # #------QTreeWidget------
-        # tree=QTreeWidget()
-        # layout.addWidget(tree)  #将组件添加到界面
-        # tree.setColumnCount(2)
-        # tree.setHeaderLabels(['key','value'])
-        #
-        # #添加根目录
-        # root=QTreeWidgetItem(tree)
-        # #设置key
-        # root.setText(0,'根节点')
-        # root.setIcon(0,QIcon('new.png'))
-        # #设置value
-        # root.setText(1,'根节点的值')
-        # #添加子目录的两种方式，第一种
-        # child1=QTreeWidgetItem(root)
-        # child1.setText(0,'子节点1')
-        # child1.setCheckState(0,Qt.Unchecked)  #设置选中状态
-        # child1.setBackground(0,QColor(205,201,201))
-        # #第二种
-        # child2=QTreeWidgetItem()
-        # child2.setText(0,'子节点2')
-        # root.addChild(child2)
-        # #添加2层子节点
-        # child1_1=QTreeWidgetItem(child1)
-        # child1_1.setText(0,'子节点1的子节点')
-        # child1_1.setIcon(0,QIcon('open.png'))
-        # #添加点击事件
-        # tree.clicked.connect(self.Tree_Clicked)
-
 
         # 创建一个QTreeWidget部件
         self.tree = QTreeWidget()
@@ -138,17 +112,22 @@ class LTree (QWidget):
         child234.setWhatsThis(0, '第二节点_child3_child4')
 
         # #QTreeWidget中每个Item的信号与槽的连接
-        # self.tree.itemClicked['QTreeWidgetItem*', 'int'].connect(self.onClick)  # 点击（包括选中，也包括checkbox选择）
+        self.tree.itemClicked['QTreeWidgetItem*', 'int'].connect(self.onClick)  # 点击（包括选中，也包括checkbox选择）
         # self.tree.itemPressed['QTreeWidgetItem*', 'int'].connect(self.onClick)  # 点击选中（不包括checkbox选择）
         # self.tree.itemChanged['QTreeWidgetItem*', 'int'].connect(self.onClick)  # 状态变更就会响应，也包括程序置的状态，使用时需要注意
 
-    def onClick(self, item, column):
-        print(item.text(column), column)
 
-    def Tree_Clicked(self,currentindex):
-        print(currentindex.data())   #和下面两句相等
-        print(self.sender().currentItem().text(0)) #获取点击的key的值
-        print(self.sender().currentItem().text(1)) #获取点击的value的值
+    def onClick(self, item, column):#发送信号给外部实体调用槽函数
+        self.sendmsg.emit(item,column)
+        # print(item.text(column), column)
+        print(item.whatsThis(column))
+        # item=self.tree.currentItem()
+        # print('Key=%s,value=%s'%(item.text(0),item.text(1)))
+
+    # def Tree_Clicked(self,currentindex):
+    #     print(currentindex.data())   #和下面两句相等
+    #     print(self.sender().currentItem().text(0)) #获取点击的key的值
+    #     print(self.sender().currentItem().text(1)) #获取点击的value的值
 
 
 

@@ -1,4 +1,5 @@
 #程序窗体跳转总管
+from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QApplication,
                              QToolBox, QPushButton, QLabel,
                              QTreeWidget, QTreeWidgetItem)
@@ -28,10 +29,7 @@ class SwitchMainForm(QMainWindow, Ui_Form):
         # self.splitter.setGeometry(QtCore.QRect(10, 10, 700, 871))
 
         self.tree=LTree()
-        # # #QTreeWidget中每个Item的信号与槽的连接
-        # self.tree.itemClicked['QTreeWidgetItem*', 'int'].connect(self.onClick)  # 点击（包括选中，也包括checkbox选择）
-        # self.tree.itemPressed['QTreeWidgetItem*', 'int'].connect(self.onClick)  # 点击选中（不包括checkbox选择）
-        # self.tree.itemChanged['QTreeWidgetItem*', 'int'].connect(self.onClick)  # 状态变更就会响应，也包括程序置的状态，使用时需要注意
+        self.tree.sendmsg.connect(self.onClick)#接收信号绑定本对象中槽函数
 
         # 给QSsplitter添加第一个窗体（QTreeWidget）
         self.splitter.addWidget(self.tree)
@@ -59,10 +57,6 @@ class SwitchMainForm(QMainWindow, Ui_Form):
         self.splitter.setAutoFillBackground(True)
 
 
-    def Tree_Clicked(self,currentindex):
-        print(currentindex.data())   #和下面两句相等
-        print(self.sender().currentItem().text(0)) #获取点击的key的值
-        print(self.sender().currentItem().text(1)) #获取点击的value的值
 
     # QTreeWidget中每个Item的信号与槽的连接；对应的槽函数；输出鼠标选中的item名字和所在列数；其中text(column)表示第 column 列的item名字
     def onClick(self, item, column):
