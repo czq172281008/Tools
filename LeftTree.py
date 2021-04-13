@@ -23,7 +23,7 @@ class LTree (QWidget):
     def initUI(self):
         self.setWindowTitle('demo')
         # self.setGeometry(300,300,300,200)
-        layout=QVBoxLayout()#不加样式控件无法显示出来
+        layout=QVBoxLayout() #不加样式布局无法显示出来树
         self.setLayout(layout)
 
         # 创建一个QTreeWidget部件
