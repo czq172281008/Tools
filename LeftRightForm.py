@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'treetable.ui'
+# Form implementation generated from reading ui file 'LeftRightForm.ui'
 #
 # Created by: PyQt5 UI code generator 5.13.0
 #
@@ -17,6 +17,7 @@ class Ui_Form(object):
         self.splitter = QtWidgets.QSplitter(Form)
         self.splitter.setGeometry(QtCore.QRect(10, 10, 1021, 871))
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
+        self.splitter.setHandleWidth(5)
         self.splitter.setObjectName("splitter")
 
         self.retranslateUi(Form)

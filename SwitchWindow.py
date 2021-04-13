@@ -11,7 +11,7 @@ from FORM.RightEntity import RightEn
 from LeftTree import LTree
 import sys
 
-from treetable import *#窗体和逻辑分离
+from LeftRightForm import *#承载左侧菜单和右侧显示基底框架
 
 class SwitchMainForm(QMainWindow, Ui_Form):
     def __init__(self, parent=None):
@@ -43,12 +43,12 @@ class SwitchMainForm(QMainWindow, Ui_Form):
         # 在主窗口的QSplitter里添加子窗口
         self.splitter.addWidget(self.RE)
 
-        # 设置分割器QSplitter初始化时各个子窗体的大小；下面是两个子窗体。
+        # 设置分割器QSplitter左右分割大小。
         self.splitter.setSizes([180, 700])
-
+        # self.splitter.setHandleWidth(10)
         #  下面一行为设置 QSplitter 分割器伸缩大小因子，但是这样设置全屏后导航栏放大了比较好看；不清楚原因。
         self.splitter.setStretchFactor(0, 0)  # 此函数用于设定：控件是否可伸缩。第一个参数用于指定控件的序号。第二个函数大于0时，表示控件可伸缩，小于0时，表示控件不可伸缩。
-        self.splitter.setStretchFactor(1, 1)  # 此函数用于设定：控件是否可伸缩。第一个参数用于指定控件的序号。第二个函数大于0时，表示控件可伸缩，小于0时，表示控件不可伸缩。
+        # self.splitter.setStretchFactor(1, 1)  # 此函数用于设定：控件是否可伸缩。第一个参数用于指定控件的序号。第二个函数大于0时，表示控件可伸缩，小于0时，表示控件不可伸缩。
 
         #  设置 QSplitter 分割器各部分最小化时的情况，设置为“False”意味着左右拉动分隔栏时各部分不会消失；此设置也可以在界面设计时在 QtDesigner 里设置。
         self.splitter.setChildrenCollapsible(False)

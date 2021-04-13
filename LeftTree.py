@@ -21,8 +21,8 @@ class LTree (QWidget):
         self.initUI()
 
     def initUI(self):
-        self.setWindowTitle('demo')
-        # self.setGeometry(300,300,300,200)
+        self.setWindowTitle('左侧树形菜单')
+        # self.setGeometry(300,400,300,200)
         layout=QVBoxLayout() #不加样式布局无法显示出来树
         self.setLayout(layout)
 
@@ -53,12 +53,12 @@ class LTree (QWidget):
         root.setIcon(0, icon)
 
         # 设置根节点的名称
-        root.setText(0, '第一节点')
-        root2.setText(0, '第二节点')
+        root.setText(0, '共享服务')
+        root2.setText(0, 'FMIS平台')
 
         # 给根节点设置备注和说明；相当于给根节点设置了一个新名字！后面信号与槽函数连接时可以通过这个“新名字”与槽函数连接。
-        root.setWhatsThis(0, '第一节点')
-        root2.setWhatsThis(0, '第二节点')
+        root.setWhatsThis(0, '共享服务')
+        root2.setWhatsThis(0, 'FMIS平台')
 
         # 为root节点设置子结点
         child11 = QTreeWidgetItem(root)
@@ -68,10 +68,10 @@ class LTree (QWidget):
 
         # 设置child1节点的图片
         icon2 = QIcon()
-        icon2.addPixmap(QPixmap("./Original Point.png"), QIcon.Normal)
+        icon2.addPixmap(QPixmap("./FORM/Point.png"), QIcon.Normal)
         child11.setIcon(0, icon2)
 
-        child11.setText(0, 'child1')
+        child11.setText(0, '单据查询')
         # child1.setText(1, 'name1')
         child12 = QTreeWidgetItem(root)
         # 设置child2节点的图片
