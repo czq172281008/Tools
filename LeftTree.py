@@ -127,16 +127,7 @@ class LTree (QWidget):
     def onClick(self, item, column):#发送信号给外部实体调用槽函数
         self.sendmsg.emit(item,column)
         # print(item.text(column), column)
-        print(item.whatsThis(column))
-        # item=self.tree.currentItem()
-        # print('Key=%s,value=%s'%(item.text(0),item.text(1)))
-
-    # def Tree_Clicked(self,currentindex):
-    #     print(currentindex.data())   #和下面两句相等
-    #     print(self.sender().currentItem().text(0)) #获取点击的key的值
-    #     print(self.sender().currentItem().text(1)) #获取点击的value的值
-
-
+        # print(item.whatsThis(column))
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
