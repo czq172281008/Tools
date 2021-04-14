@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget
-from Welcome import *
+from UI.Welcome import *
 
 class WelContrl(QWidget, Ui_WelForm):
     def __init__(self):

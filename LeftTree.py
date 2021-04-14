@@ -47,9 +47,9 @@ class LTree (QWidget):
         # 设置root节点的打开/关闭状态下的不同的图片
         icon = QIcon()
         # 节点打开状态
-        icon.addPixmap(QPixmap("./FORM/folder open.png"), QIcon.Normal, QIcon.On)
+        icon.addPixmap(QPixmap("UI/folder open.png"), QIcon.Normal, QIcon.On)
         # 节点关闭状态　　
-        icon.addPixmap(QPixmap("./FORM/folder closed.png"), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap("UI/folder closed.png"), QIcon.Normal, QIcon.Off)
         root.setIcon(0, icon)
 
         # 设置根节点的名称
@@ -68,7 +68,7 @@ class LTree (QWidget):
 
         # 设置child1节点的图片
         icon2 = QIcon()
-        icon2.addPixmap(QPixmap("./FORM/Point.png"), QIcon.Normal)
+        icon2.addPixmap(QPixmap("UI/Point.png"), QIcon.Normal)
         child11.setIcon(0, icon2)
 
         child11.setText(0, '单据信息')

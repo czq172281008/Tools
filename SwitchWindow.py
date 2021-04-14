@@ -1,19 +1,15 @@
 #程序窗体跳转总管
-from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import (QMainWindow, QWidget, QApplication,
-                             QToolBox, QPushButton, QLabel,
-                             QTreeWidget, QTreeWidgetItem)
-from PyQt5.QtGui import QIcon, QPixmap
-from FORM.ChildrenForm2 import Ui_Form2
-from FORM.ChildrenForm3_Action import ChildrenForm3_Busi
-from FORM.ChildrenForm4 import Ui_Form4
-from FORM.RightEntity import RightEn
+from PyQt5.QtWidgets import (QMainWindow)
+from UI.ChildrenForm2 import Ui_Form2
+from UI.ChildrenForm3_Action import ChildrenForm3_Busi
+from UI.ChildrenForm4 import Ui_Form4
+from UI.RightEntity import RightEn
 from LeftTree import LTree
 from DjInfoContrl import *
 from WelcomeContrl import *
 import sys
 
-from LeftRightForm import *#承载左侧菜单和右侧显示基底框架
+from UI.LeftRightForm import *#承载左侧菜单和右侧显示基底框架
 
 class SwitchMainForm(QMainWindow, Ui_Form):
     def __init__(self, parent=None):

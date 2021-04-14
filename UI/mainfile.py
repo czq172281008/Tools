@@ -2,11 +2,11 @@ from PyQt5.QtWidgets import (QMainWindow, QWidget, QApplication,
                              QToolBox, QPushButton, QLabel,
                              QTreeWidget, QTreeWidgetItem)
 from PyQt5.QtGui import QIcon, QPixmap
-from FORM.MainForm import Ui_MainWindow
-from FORM.ChildrenForm import Ui_Form
-from FORM.ChildrenForm2 import Ui_Form2
-from FORM.ChildrenForm3_Action import ChildrenForm3_Busi
-from FORM.ChildrenForm4 import Ui_Form4
+from UI.MainForm import Ui_MainWindow
+from UI.ChildrenForm import Ui_Form
+from UI.ChildrenForm2 import Ui_Form2
+from UI.ChildrenForm3_Action import ChildrenForm3_Busi
+from UI.ChildrenForm4 import Ui_Form4
 import sys
 from treetable import *
 

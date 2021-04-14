@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget
-from FORM.ChildrenForm import Ui_Form
+from UI.ChildrenForm import Ui_Form
 
 class RightEn(QWidget, Ui_Form):
     def __init__(self):

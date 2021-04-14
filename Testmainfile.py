@@ -1,17 +1,11 @@
 import sys
 
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import pyqtSignal, QThread
-import PyQt5.QtGui
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox, QWidget, QTableView, QFrame, QSplitter, \
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QApplication, QMessageBox, QWidget, QFrame, QSplitter, \
     QTextEdit
 
-import QTableInfo
-from DjInfo import Ui_Form #单独QTDesigner绘制窗体文件
-import QTableInfo
-import ttt # abc
-import TableList
-from FORM.MainForm import Ui_MainWindow
+from UI.MainForm import Ui_MainWindow
 
 class Test1(QWidget,Ui_MainWindow):#继承QTDesigner绘制窗体文件单独页面DjInfo.Ui_Form实现界面和逻辑分离
     sendmsg = pyqtSignal(object)
