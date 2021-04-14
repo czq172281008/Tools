@@ -91,7 +91,7 @@ class MainWindow(QMainWindow):
 
         window = MdiSubWindow()  # 实例化多文档界面对象
         window.setWidget(SE)  # 设置sub内部部件
-        window.resize(700,800)
+        window.resize(1000,800)#打开子窗体宽和高
         window.setWindowTitle('核弹 %d' % len(self.mdi.subWindowList()))  # 设置新建子窗口的标题
         # print(sub.windowTitle())
         self.mdi.addSubWindow(window)  # 将子窗口添加到Mdi区域

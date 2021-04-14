@@ -9,6 +9,8 @@ from FORM.ChildrenForm3_Action import ChildrenForm3_Busi
 from FORM.ChildrenForm4 import Ui_Form4
 from FORM.RightEntity import RightEn
 from LeftTree import LTree
+from DjInfoContrl import *
+from WelcomeContrl import *
 import sys
 
 from LeftRightForm import *#承载左侧菜单和右侧显示基底框架
@@ -35,20 +37,25 @@ class SwitchMainForm(QMainWindow, Ui_Form):
         self.splitter.addWidget(self.tree)
 
         # 主窗口初始化时实例化子窗口1和子窗口2
+        self.welcome =WelContrl()#欢迎界面
+        self.DJinfo =ControlCode()#单据信息
         self.RE = RightEn()
+
+
+
         self.child2 = ChildrenForm2()
         self.child3 = ChildrenForm3()
         self.child4 = ChildrenForm4()
 
         # 在主窗口的QSplitter里添加子窗口
-        self.splitter.addWidget(self.RE)
+        self.splitter.addWidget(self.welcome)
 
         # 设置分割器QSplitter左右分割大小。
         self.splitter.setSizes([180, 700])
         # self.splitter.setHandleWidth(10)
         #  下面一行为设置 QSplitter 分割器伸缩大小因子，但是这样设置全屏后导航栏放大了比较好看；不清楚原因。
         self.splitter.setStretchFactor(0, 0)  # 此函数用于设定：控件是否可伸缩。第一个参数用于指定控件的序号。第二个函数大于0时，表示控件可伸缩，小于0时，表示控件不可伸缩。
-        # self.splitter.setStretchFactor(1, 1)  # 此函数用于设定：控件是否可伸缩。第一个参数用于指定控件的序号。第二个函数大于0时，表示控件可伸缩，小于0时，表示控件不可伸缩。
+        self.splitter.setStretchFactor(1, 1)  # 此函数用于设定：控件是否可伸缩。第一个参数用于指定控件的序号。第二个函数大于0时，表示控件可伸缩，小于0时，表示控件不可伸缩。
 
         #  设置 QSplitter 分割器各部分最小化时的情况，设置为“False”意味着左右拉动分隔栏时各部分不会消失；此设置也可以在界面设计时在 QtDesigner 里设置。
         self.splitter.setChildrenCollapsible(False)
@@ -69,7 +76,7 @@ class SwitchMainForm(QMainWindow, Ui_Form):
             # 把QSplitter的指定位置的窗体从QSplitter中剥离
             self.splitter.widget(1).setParent(None)
             # 在QSplitter的指定位置载入新窗体，但要先用上面的“self.splitter.widget(1).setParent(None)”命令。
-            self.splitter.insertWidget(1, self.RE)
+            self.splitter.insertWidget(1, self.welcome)
             self.splitter.setStretchFactor(0, 0)  # 此函数用于设定：控件是否可伸缩。第一个参数用于指定控件的序号。第二个函数大于0时，表示控件可伸缩，小于0时，表示控件不可伸缩。
             self.splitter.setStretchFactor(1, 1)  # 此函数用于设定：控件是否可伸缩。第一个参数用于指定控件的序号。第二个函数大于0时，表示控件可伸缩，小于0时，表示控件不可伸缩。
             #  设置 QSplitter 分割器各部分最小化时的情况，设置为“False”意味着左右拉动分隔栏时各部分不会消失；此设置也可以在界面设计时在 QtDesigner 里设置。
@@ -78,7 +85,7 @@ class SwitchMainForm(QMainWindow, Ui_Form):
             self.splitter.setAutoFillBackground(True)
         elif item.whatsThis(column) == '第一节点_child1':
             self.splitter.widget(1).setParent(None)
-            self.splitter.insertWidget(1, self.child2)
+            self.splitter.insertWidget(1, self.DJinfo)
             self.splitter.setStretchFactor(0, 0)
             self.splitter.setStretchFactor(1, 1)
             self.splitter.setChildrenCollapsible(False)

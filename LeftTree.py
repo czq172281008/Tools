@@ -71,7 +71,7 @@ class LTree (QWidget):
         icon2.addPixmap(QPixmap("./FORM/Point.png"), QIcon.Normal)
         child11.setIcon(0, icon2)
 
-        child11.setText(0, '单据查询')
+        child11.setText(0, '单据信息')
         # child1.setText(1, 'name1')
         child12 = QTreeWidgetItem(root)
         # 设置child2节点的图片

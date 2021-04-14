@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox,
 import QTableInfo
 from DjInfo import Ui_Form #单独QTDesigner绘制窗体文件
 import QTableInfo
-import ttt # abc
+
 import TableList
 
 class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页面DjInfo.Ui_Form实现界面和逻辑分离
