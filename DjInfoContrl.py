@@ -22,11 +22,11 @@ class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页�
         self.setLayout(self.layout)
 
         self.DataTable.setVisible(False)
-        self.bt_Search.clicked.connect(lambda: self.on_save())
+        self.bt_Search.clicked.connect(lambda: self.on_Search())
 
 
-    def on_save(self):
-        if(self.F_DJBH.text()==''):
+    def on_Search(self):
+        if(self.F_DJBH.text()!=''):
             self.DataTable.setVisible(False)
             btncont = self.layout.count()
             widget = QtWidgets.QTableView()
@@ -77,8 +77,8 @@ class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页�
 
         else:
             self.DataTable.setVisible(True)
-            QMessageBox.information(self, "单据编号",
-                                    self.tr("哈哈"))
+            QMessageBox.information(self, "提示",
+                                    self.tr("单据编号为空"))
 
 
 

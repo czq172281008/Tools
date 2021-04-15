@@ -34,7 +34,7 @@ class SwitchMainForm(QMainWindow, Ui_Form):
 
         # 主窗口初始化时实例化子窗口1和子窗口2
         self.welcome =WelContrl()#欢迎界面
-        self.DJinfo =ControlCode()#单据信息
+
         self.RE = RightEn()
 
 
@@ -80,6 +80,7 @@ class SwitchMainForm(QMainWindow, Ui_Form):
             #  设置 QSplitter 分割器随主窗口自适应大小变化。此设置也可以在界面设计时在 QtDesigner 里设置。
             self.splitter.setAutoFillBackground(True)
         elif item.whatsThis(column) == '第一节点_child1':
+            self.DJinfo =ControlCode()#单据信息
             self.splitter.widget(1).setParent(None)
             self.splitter.insertWidget(1, self.DJinfo)
             self.splitter.setStretchFactor(0, 0)
