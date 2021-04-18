@@ -17,7 +17,7 @@ class LTree (QWidget):
     sendmsg = pyqtSignal(QTreeWidgetItem,int)#定义信号准备发出
 
     def __init__(self):
-        super().__init__()
+        super().__init__()#可替换成super(LTree, self).__init__()
         self.initUI()
 
     def initUI(self):
