@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QApplication, QMessageBox, QWidget, QFrame, QSplitte
     QTextEdit
 
 from UI.DjInfo import Ui_Form #单独QTDesigner绘制窗体文件
+from DataGridPage import DataGrid
 
 
 class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页面DjInfo.Ui_Form实现界面和逻辑分离
@@ -29,7 +30,8 @@ class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页�
         if(self.F_DJBH.text()!=''):
             self.DataTable.setVisible(False)
             btncont = self.layout.count()
-            widget = QtWidgets.QTableView()
+            #widget = QtWidgets.QTableView()
+            widget = DataGrid()
             # self.widget.setGeometry(10, 10, 380, 240)
             self.layout.addWidget(widget)
             widget2 = QtWidgets.QTableView()

@@ -53,7 +53,7 @@ def createTableAndInit():
 class DataGrid(QWidget):
     def __init__(self, parent=None):
         super().__init__()
-        self.setWindowTitle("分页查询例子")
+        self.setWindowTitle("分页查询")
         self.resize(750, 300)
 
         # 查询模型
@@ -253,7 +253,7 @@ class DataGrid(QWidget):
     def onSwitchPageButtonClick(self):
         # 得到输入字符串
         szText = self.switchPageLineEdit.text()
-        # 数字正则表达式
+        # 判断正整数的正则表达式
         pattern = re.compile('^[1-9]\d*$')
         match = pattern.match(szText)
 
