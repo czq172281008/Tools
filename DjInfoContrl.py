@@ -10,9 +10,17 @@ from DataGridPage import DataGrid
 import DB.DBConn as Con
 from DataGridPage import *
 
+
 class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页面DjInfo.Ui_Form实现界面和逻辑分离
     sendmsg = pyqtSignal(object)
     isConnected = False
+    Ora_ip = ''
+    Ora_port = ''
+    Ora_password = ''
+    Ora_user = ''
+    Ora_sname=''
+    OrcConStr=''#11.11.75.13/1521/gxbxorcl01/cwbase2_9999/gxtest8888
+
     def __init__(self, parent=None):
         super(ControlCode, self).__init__(parent)#可替换成# QWidget.__init__(self) # QWidget.__init__(self)
         # QWidget.__init__(self)
@@ -28,12 +36,26 @@ class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页�
 
 
     def on_Search(self):
+        #     self.editHost.setText("11.11.75.13")
+        # self.editPassword.setText("gxtest8888")
+        # self.editPort.setText("1521")
+        # self.editSID.setText("gxbxorcl01")
+        # self.editUser.setText("cwbase2_9999")
+        # self.lineEditSearch.setText("saxclb")
+        if(self.DB_CS.isChecked()):
+            Ora_ip = '11.11.75.13'
+            Ora_port = '1521'
+            Ora_user = 'cwbase2_9999'
+            Ora_password = 'gxtest8888'
+            Ora_sname='gxbxorcl01'
+            OrcConStr='11.11.75.13/1521/gxbxorcl01/cwbase2_9999/gxtest8888'
+
         if(self.F_DJBH.text()!=''):
             self.DataTable.setVisible(False)
             btncont = self.layout.count()
             #widget = QtWidgets.QTableView()
 
-            widget = DataGrid()
+            widget = DataGrid(Ora_ip,Ora_port,Ora_user,Ora_password,Ora_sname,OrcConStr)
             # self.widget.setGeometry(10, 10, 380, 240)
             self.layout.addWidget(widget)
             widget2 = QtWidgets.QTableView()

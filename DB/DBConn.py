@@ -31,20 +31,27 @@ class DB:
     
     
     def TablesSearch(self, owner:str, search:str)-> [str]:
-        #print(search)
-        def innerfunc(owner:str, searchstr:str)->List[str]:
-            percentile:str = "%"
-            searchstr = percentile.__add__(searchstr).__add__(percentile)
-            #SELECT table_name FROM dba_tables WHERE upper(owner)=upper('cwbase2_9999') and upper(table_name) like upper('%saxclb%') ORDER BY table_name
-            tbquery = ''' SELECT table_name FROM dba_tables WHERE upper(owner)=upper(:1) and upper(table_name) like upper(:2) ORDER BY table_name'''
-            self.cursor.execute(tbquery, (owner,searchstr))
-            rows = list(self.cursor.fetchall())
-            return rows
-        tableslist = innerfunc(owner,search)
-        res = []
-        for name in tableslist:
-            res.append(name.__getitem__(0))
-        return res
+        try:
+            #print(search)
+            def innerfunc(owner:str, searchstr:str)->List[str]:
+                percentile:str = "%"
+                searchstr = percentile.__add__(searchstr).__add__(percentile)
+                #SELECT table_name FROM dba_tables WHERE upper(owner)=upper('cwbase2_9999') and upper(table_name) like upper('%saxclb%') ORDER BY table_name
+                tbquery = ''' SELECT table_name FROM dba_tables WHERE upper(owner)=upper(:1) and upper(table_name) like upper(:2) ORDER BY table_name'''
+                self.cursor.execute(tbquery, (owner,searchstr))
+                rows = list(self.cursor.fetchall())
+                return rows
+            tableslist = innerfunc(owner,search)
+            res = []
+            for name in tableslist:
+                res.append(name.__getitem__(0))
+            return res
+
+        except Exception as e:
+            self.cursor.close()
+            self.con.close()
+            print('执行失败！%s'%e)
+
 
     def TablesWithColumnName(self, owner:str, search:str)->[str]:
         # print(search)
@@ -94,4 +101,10 @@ class DB:
     def Close(self):
         self.cursor.close()
         self.con.close()
+        print('析构了')
+
+    # def __del__(self):
+    #     self.cursor.close()
+    #     self.con.close()
+    #     print('析构了')
 

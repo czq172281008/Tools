@@ -52,7 +52,21 @@ def createTableAndInit():
     return True
 
 class DataGrid(QWidget):
-    def __init__(self, parent=None):
+
+    def __init__(self, ip,port,user,password,sname,OrcConStr):
+        self.Ora_ip=ip
+        self.Ora_port=port
+        self.Ora_user=user
+        self.Ora_password=password
+        self.Ora_sname=sname
+        self.OrcConStr=OrcConStr
+        print(self.OrcConStr.split('/'))
+        print(self.OrcConStr.split('/')[0])
+        print(self.OrcConStr.split('/')[1])
+        print(self.OrcConStr.split('/')[2])
+        print(self.OrcConStr.split('/')[3])
+        print(self.OrcConStr.split('/')[4])
+
         super().__init__()
         self.setWindowTitle("分页查询")
         self.resize(750, 300)
@@ -284,6 +298,9 @@ class DataGrid(QWidget):
         self.currentPage = pageIndex
         # 刷新状态
         self.updateStatus();
+
+    def __del__(self):
+        pass
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
