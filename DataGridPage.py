@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import (QWidget, QHBoxLayout, QVBoxLayout, QApplication, QP
                              QTableView, QHeaderView, QMessageBox)
 from PyQt5.QtCore import Qt
 from PyQt5.QtSql import QSqlDatabase, QSqlQueryModel, QSqlQuery
+from DB.DBConn import *
 
 def createTableAndInit():
     # 添加数据库

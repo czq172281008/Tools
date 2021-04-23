@@ -7,11 +7,12 @@ from PyQt5.QtWidgets import QApplication, QMessageBox, QWidget, QFrame, QSplitte
 
 from UI.DjInfo import Ui_Form #单独QTDesigner绘制窗体文件
 from DataGridPage import DataGrid
-
+import DB.DBConn as Con
+from DataGridPage import *
 
 class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页面DjInfo.Ui_Form实现界面和逻辑分离
     sendmsg = pyqtSignal(object)
-
+    isConnected = False
     def __init__(self, parent=None):
         super(ControlCode, self).__init__(parent)#可替换成# QWidget.__init__(self) # QWidget.__init__(self)
         # QWidget.__init__(self)
@@ -31,6 +32,7 @@ class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页�
             self.DataTable.setVisible(False)
             btncont = self.layout.count()
             #widget = QtWidgets.QTableView()
+
             widget = DataGrid()
             # self.widget.setGeometry(10, 10, 380, 240)
             self.layout.addWidget(widget)
@@ -63,7 +65,7 @@ class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页�
             self.layout.addWidget(splitter2)
             self.layout.addWidget(splitter2)
             self.layout.addWidget(widget2)
-
+            self.connectDB()
             # QW1 = QWidget()
             # DjinfoW1 = ttt.Czq()
             #
@@ -83,7 +85,67 @@ class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页�
                                     self.tr("单据编号为空"))
 
 
+    def Data(self, tablename, sqlcond, table):
+        query = 'select * from '
+        query+=tablename
+        query+= ' '
+        rowCount = table.rowCount()
+        condlist = []
+        for row in range(rowCount):
+            colname = table.item(row, 0).text()
+            colvalue = table.cellWidget(row,3).currentText()
+            coltype  = table.item(row, 1).text()
+            if colvalue != "-select-":
+                if "VARCHAR" not in coltype:
+                    condlist.append(" "+colname+" = "+colvalue+" ")
+                else :
+                    condlist.append(" "+colname+" = '"+colvalue+"' ")
 
+        if len(condlist) > 0:
+            query += " where"
+        for i in range(len(condlist)):
+            if i > 0:
+                query+= sqlcond
+            query += condlist[i]
+
+        #query +=" ;" #lol does not take ; wasted  day :-)
+        data = self.con.Query(query)
+        diag = DataGrid()
+        self.resUI = QtWidgets.QWidget()
+        diag.setupUi(self.resUI)
+        # add data
+        diag.setupdata(data,tablename,self,query,self.writer)
+        self.resUI.setWindowTitle(tablename+':Data')
+        self.resUI.show()
+        self.colResUI.append(self.resUI)
+
+    def connectDB(self):
+        if self.isConnected is False: #是否连接，未连接进行连接
+            self.con = Con.DB('11.11.75.13','1521','gxbxorcl01','cwbase2_9999','gxtest8888')
+            self.con.Connect()
+        else:
+            self.con.Close()
+        self.isConnected = not self.isConnected
+
+    # self.editHost.setText("11.11.75.13")
+    # self.editPassword.setText("gxtest8888")
+    # self.editPort.setText("1521")
+    # self.editSID.setText("gxbxorcl01")
+    # self.editUser.setText("cwbase2_9999")
+        # self.editHost.setEnabled(False)
+        # editfields = [self.editHost,self.editPassword,self.editPort,self.editSID,self.editUser]
+        # if self.isConnected is True:
+        #     self.btnConnect.setText("Disconnect")
+        #     self.pushSearch.setEnabled(True)
+        #     for edit in editfields:
+        #         edit.setEnabled(False)
+        #
+        #     # self.writer.AddLine('Connected to '+self.con.Version(),False)#困扰一天这条语句报错导致界面没有进行更新强制退出
+        # else:
+        #     self.pushSearch.setEnabled(False)
+        #     self.btnConnect.setText("Connect")
+        #     for edit in editfields:
+        #         edit.setEnabled(True)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
