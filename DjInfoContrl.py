@@ -54,7 +54,7 @@ class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页�
             self.DataTable.setVisible(False)
             btncont = self.layout.count()
             #widget = QtWidgets.QTableView()
-
+            self.connectDB()
             widget = DataGrid(Ora_ip,Ora_port,Ora_user,Ora_password,Ora_sname,OrcConStr)
             # self.widget.setGeometry(10, 10, 380, 240)
             self.layout.addWidget(widget)
@@ -87,7 +87,7 @@ class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页�
             self.layout.addWidget(splitter2)
             self.layout.addWidget(splitter2)
             self.layout.addWidget(widget2)
-            self.connectDB()
+
             # QW1 = QWidget()
             # DjinfoW1 = ttt.Czq()
             #
