@@ -54,7 +54,11 @@ class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页�
             self.DataTable.setVisible(False)
             btncont = self.layout.count()
             #widget = QtWidgets.QTableView()
-            self.connectDB()
+            self.connectDB(OrcConStr)
+            sql="SELECT CTN_ID,MDL_ID FROM SYS_MDL_CTN WHERE MDL_ID =(SELECT F_YWMX FROM SAFWML WHERE F_BH IN (select F_FWML from sadjall where F_DJBH='%s'%(BX30111002020113000026)))"
+            # sql=sql.replace("'","''")
+            sql = str(sql).strip().replace("'","''")
+            data = self.con.Query(sql)
             widget = DataGrid(Ora_ip,Ora_port,Ora_user,Ora_password,Ora_sname,OrcConStr)
             # self.widget.setGeometry(10, 10, 380, 240)
             self.layout.addWidget(widget)
@@ -98,7 +102,7 @@ class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页�
 
             # qb = QTableInfo.BookStorageViewer()
             # qb.show()
-            # QMessageBox.information(self, "单据编号",
+            # QMessageBox.information(self, '单据编号",
             #                     self.tr("单据编号为空"))
 
         else:
@@ -141,9 +145,15 @@ class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页�
         self.resUI.show()
         self.colResUI.append(self.resUI)
 
-    def connectDB(self):
+    def connectDB(self,strCnn):
         if self.isConnected is False: #是否连接，未连接进行连接
-            self.con = Con.DB('11.11.75.13','1521','gxbxorcl01','cwbase2_9999','gxtest8888')
+            ip=strCnn.split('/')[0]# OrcConStr='11.11.75.13/1521/gxbxorcl01/cwbase2_9999/gxtest8888'
+            port=strCnn.split('/')[1]
+            sname=strCnn.split('/')[2]
+            username=strCnn.split('/')[3]
+            password=strCnn.split('/')[4]
+
+            self.con = Con.DB(ip,port,sname,username,password)
             self.con.Connect()
         else:
             self.con.Close()
