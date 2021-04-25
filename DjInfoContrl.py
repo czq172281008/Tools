@@ -9,7 +9,8 @@ from UI.DjInfo import Ui_Form #单独QTDesigner绘制窗体文件
 from DataGridPage import DataGrid
 import DB.DBConn as Con
 from DataGridPage import *
-
+import os
+os.environ['NLS_LANG'] = 'SIMPLIFIED CHINESE_CHINA.UTF8'#处理结果集乱码
 
 class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页面DjInfo.Ui_Form实现界面和逻辑分离
     sendmsg = pyqtSignal(object)
@@ -36,28 +37,35 @@ class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页�
 
 
     def on_Search(self):
-        #     self.editHost.setText("11.11.75.13")
+        #     self.editHost.setText("11.11.48.64")
         # self.editPassword.setText("gxtest8888")
         # self.editPort.setText("1521")
-        # self.editSID.setText("gxbxorcl01")
+        # self.editSID.setText("gxcsdb2")
         # self.editUser.setText("cwbase2_9999")
         # self.lineEditSearch.setText("saxclb")
         if(self.DB_CS.isChecked()):
-            Ora_ip = '11.11.75.13'
+            Ora_ip = '11.11.48.64'
             Ora_port = '1521'
             Ora_user = 'cwbase2_9999'
             Ora_password = 'gxtest8888'
-            Ora_sname='gxbxorcl01'
-            OrcConStr='11.11.75.13/1521/gxbxorcl01/cwbase2_9999/gxtest8888'
+            Ora_sname='gxcsdb2'
+            OrcConStr='11.11.48.64/1521/gxcsdb2/cwbase2_9999/gxtest8888'
 
         if(self.F_DJBH.text()!=''):
             self.DataTable.setVisible(False)
             btncont = self.layout.count()
             #widget = QtWidgets.QTableView()
             self.connectDB(OrcConStr)
-            sql="SELECT CTN_ID,MDL_ID FROM SYS_MDL_CTN WHERE MDL_ID =(SELECT F_YWMX FROM SAFWML WHERE F_BH IN (select F_FWML from sadjall where F_DJBH='%s'%(BX30111002020113000026)))"
-            # sql=sql.replace("'","''")
-            sql = str(sql).strip().replace("'","''")
+            sql="SELECT CTN_ID,MDL_ID FROM SYS_MDL_CTN WHERE MDL_ID =(SELECT F_YWMX FROM SAFWML WHERE F_BH IN (select F_FWML from sadjall where F_DJBH='BX30111002020121500058'))"
+
+            #第一种sql传参格式
+            # str='0001'
+            # sql=sql.format(str)
+            #第二种sql传参格式
+            # sql = "insert into goods_detail(Url) values ('%s')" %(Url)
+            # sql = "UPDATE goods_detail SET productPrice = %s,productName = %s,stock = %s where  url = %s"
+            # cursor.execute(sql,(GoodsDetailPrice,NewGoodsName,Stock, NewGoodsUrl))
+
             data = self.con.Query(sql)
             widget = DataGrid(Ora_ip,Ora_port,Ora_user,Ora_password,Ora_sname,OrcConStr)
             # self.widget.setGeometry(10, 10, 380, 240)
