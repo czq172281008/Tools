@@ -1,10 +1,12 @@
 import sys
 import re
+
+from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import (QWidget, QHBoxLayout, QVBoxLayout, QApplication, QPushButton, QLineEdit, QLabel, QSplitter,
                              QTableView, QHeaderView, QMessageBox)
 from PyQt5.QtCore import Qt
 from PyQt5.QtSql import QSqlDatabase, QSqlQueryModel, QSqlQuery
-from DB.DBConn import *
+import DB.DBConn as Con
 
 def createTableAndInit():
     # 添加数据库
@@ -52,22 +54,25 @@ def createTableAndInit():
     return True
 
 class DataGrid(QWidget):
-
-    def __init__(self, ip,port,user,password,sname,OrcConStr):
-        self.Ora_ip=ip
-        self.Ora_port=port
-        self.Ora_user=user
-        self.Ora_password=password
-        self.Ora_sname=sname
-        self.OrcConStr=OrcConStr
-        print(self.OrcConStr.split('/'))
-        print(self.OrcConStr.split('/')[0])
-        print(self.OrcConStr.split('/')[1])
-        print(self.OrcConStr.split('/')[2])
-        print(self.OrcConStr.split('/')[3])
-        print(self.OrcConStr.split('/')[4])
+    isConnected=False
+    def __init__(self):#def __init__(self, ip,port,user,password,sname,OrcConStr):
+        # self.Ora_ip=ip
+        # self.Ora_port=port
+        # self.Ora_user=user
+        # self.Ora_password=password
+        # self.Ora_sname=sname
+        # self.OrcConStr=OrcConStr
+        # print(self.OrcConStr.split('/'))
+        # print(self.OrcConStr.split('/')[0])
+        # print(self.OrcConStr.split('/')[1])
+        # print(self.OrcConStr.split('/')[2])
+        # print(self.OrcConStr.split('/')[3])
+        # print(self.OrcConStr.split('/')[4])
 
         super().__init__()
+
+
+
         self.setWindowTitle("分页查询")
         self.resize(750, 300)
 
@@ -98,6 +103,20 @@ class DataGrid(QWidget):
 
         self.db = None
         self.initUI()
+
+    def connectDB(self,strCnn):
+        if self.isConnected is False: #是否连接，未连接进行连接
+            ip=strCnn.split('/')[0]# OrcConStr='11.11.75.13/1521/gxbxorcl01/cwbase2_9999/gxtest8888'
+            port=strCnn.split('/')[1]
+            sname=strCnn.split('/')[2]
+            username=strCnn.split('/')[3]
+            password=strCnn.split('/')[4]
+
+            self.con = Con.DB(ip,port,sname,username,password)
+            self.con.Connect()
+        else:
+            self.con.Close()
+        self.isConnected = not self.isConnected
 
     def initUI(self):
         # 创建窗口
@@ -165,45 +184,105 @@ class DataGrid(QWidget):
     # 设置表格
     def setTableView(self):
         print('*** step2 SetTableView')
-        self.db = QSqlDatabase.addDatabase('QSQLITE')
-        # 设置数据库名称
-        self.db.setDatabaseName('./db/database.db')
-        # 打开数据库
-        self.db.open()
+        # self.db = QSqlDatabase.addDatabase('QSQLITE')
+        # # 设置数据库名称
+        # self.db.setDatabaseName('./db/database.db')
+        # # 打开数据库
+        # self.db.open()
+
+        OrcConStr='11.11.48.64/1521/gxcsdb2/cwbase2_9999/gxtest8888'
+        self.connectDB(OrcConStr)
+        self.sql="""
+                    SELECT CTN_ID,MDL_ID FROM SYS_MDL_CTN WHERE MDL_ID 
+                    =(SELECT F_YWMX FROM SAFWML WHERE F_BH IN 
+                    (select F_FWML from sadjall where F_DJBH='BX30111002020121500058'))
+                
+                """
+
+        #第一种sql传参格式
+        # str='0001'
+        # sql=sql.format(str)
+        #第二种sql传参格式
+        # sql = "insert into goods_detail(Url) values ('%s')" %(Url)
+        # sql = "UPDATE goods_detail SET productPrice = %s,productName = %s,stock = %s where  url = %s"
+        # cursor.execute(sql,(GoodsDetailPrice,NewGoodsName,Stock, NewGoodsUrl))
+
+        data = self.con.Query(self.sql)
+        # cur=self.con.cursor()
+        # cur.execute(self.sql)
+
+        self.model=QStandardItemModel(len(data),len(data[0]))
+
+        title=['物料编号','基本单位']
+        #
+        self.model.setHorizontalHeaderLabels(title)
+
+        # self.tableView=QTableView()
+
+        ndata=data
+        print(ndata[0].keys())
+        print(ndata[0].values())
+        # item1=QStandardItem('000')
+        # item2=QStandardItem('111')
+        # self.model.setItem(0,0,item1)
+        # self.model.setItem(0,1,item2)
+        # for row,linedata in enumerate(ndata):
+        #
+        #     for col,itemdata in enumerate(linedata):
+        #         print (col, itemdata)
+        #         if itemdata!=None:
+        #             item=QStandardItem(str(itemdata))
+        #             # print(str(itemdata))
+        #         else :
+        #             QStandardItem('')
+        #
+        #         self.model.setItem(row,col,item)
+        rowcount = 0
+        for row in data:
+            itemcount = 0
+            for item in row.values():
+                self.model.setItem(rowcount,itemcount,QStandardItem(str(item)))
+                # self.tableView.item(rowcount,itemcount).setFlags(Qt.ItemIsSelectable)
+                itemcount = itemcount+1
+            rowcount=rowcount+1
+
+        self.tableView.setModel(self.model)
 
         # 声明查询模型
-        self.queryModel = QSqlQueryModel(self)
+        # self.queryModel = QSqlQueryModel(self)
         # 设置当前页
-        self.currentPage = 1;
-        # 得到总记录数
-        self.totalRecrodCount = self.getTotalRecordCount()
-        # 得到总页数
-        self.totalPage = self.getPageCount()
-        # 刷新状态
-        self.updateStatus()
-        # 设置总页数文本
-        self.setTotalPageLabel()
-        # 设置总记录数
-        self.setTotalRecordLabel()
-
-        # 记录查询
-        self.recordQuery(0)
+        # self.currentPage = 1;
+        # # 得到总记录数
+        # self.totalRecrodCount = self.getTotalRecordCount()
+        # # 得到总页数
+        # self.totalPage = self.getPageCount()
+        # # 刷新状态
+        # self.updateStatus()
+        # # 设置总页数文本
+        # self.setTotalPageLabel()
+        # # 设置总记录数
+        # self.setTotalRecordLabel()
+        #
+        # # 记录查询
+        # self.recordQuery(0)
         # 设置模型
-        self.tableView.setModel(self.queryModel)
+        # self.tableView.setModel(self.queryModel)
+        # self.tableView.setModel(self.model)
 
         print('totalRecrodCount=' + str(self.totalRecrodCount))
         print('totalPage=' + str(self.totalPage))
 
         # 设置表格表头
-        self.queryModel.setHeaderData(0, Qt.Horizontal, "编号")
-        self.queryModel.setHeaderData(1, Qt.Horizontal, "姓名")
-        self.queryModel.setHeaderData(2, Qt.Horizontal, "性别")
-        self.queryModel.setHeaderData(3, Qt.Horizontal, "年龄")
-        self.queryModel.setHeaderData(4, Qt.Horizontal, "院系")
+        # self.queryModel.setHeaderData(0, Qt.Horizontal, "编号")
+        # self.queryModel.setHeaderData(1, Qt.Horizontal, "姓名")
+        # self.queryModel.setHeaderData(2, Qt.Horizontal, "性别")
+        # self.queryModel.setHeaderData(3, Qt.Horizontal, "年龄")
+        # self.queryModel.setHeaderData(4, Qt.Horizontal, "院系")
 
     # 得到记录数
     def getTotalRecordCount(self):
         self.queryModel.setQuery("select * from student")
+        # self.queryModel.setQuery(self.sql)
         rowCount = self.queryModel.rowCount()
         print('rowCount=' + str(rowCount))
         return rowCount

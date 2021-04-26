@@ -37,7 +37,7 @@ class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页�
 
 
     def on_Search(self):
-        #     self.editHost.setText("11.11.48.64")
+        # self.editHost.setText("11.11.48.64")
         # self.editPassword.setText("gxtest8888")
         # self.editPort.setText("1521")
         # self.editSID.setText("gxcsdb2")
@@ -67,6 +67,18 @@ class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页�
             # cursor.execute(sql,(GoodsDetailPrice,NewGoodsName,Stock, NewGoodsUrl))
 
             data = self.con.Query(sql)
+            self.tableView = QTableView()
+
+
+            rowcount = 0
+            for row in data:
+                itemcount = 0
+                for item in row.values():
+                    self.tableView.QStandardItem(rowcount,itemcount,QtWidgets.QTableWidgetItem(str(item)))
+                    self.tableView.item(rowcount,itemcount).setFlags(Qt.ItemIsSelectable)
+                    itemcount = itemcount+1
+                rowcount=rowcount+1
+
             widget = DataGrid(Ora_ip,Ora_port,Ora_user,Ora_password,Ora_sname,OrcConStr)
             # self.widget.setGeometry(10, 10, 380, 240)
             self.layout.addWidget(widget)
