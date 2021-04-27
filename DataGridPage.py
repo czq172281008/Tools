@@ -7,51 +7,9 @@ from PyQt5.QtWidgets import (QWidget, QHBoxLayout, QVBoxLayout, QApplication, QP
 from PyQt5.QtCore import Qt
 from PyQt5.QtSql import QSqlDatabase, QSqlQueryModel, QSqlQuery
 import DB.DBConn as Con
+import os
+os.environ['NLS_LANG'] = 'SIMPLIFIED CHINESE_CHINA.UTF8'#处理结果集乱码
 
-def createTableAndInit():
-    # 添加数据库
-    db = QSqlDatabase.addDatabase('QSQLITE')
-    # 设置数据库名称
-    db.setDatabaseName('./db/database.db')
-    # 判断是否打开
-    if not db.open():
-        return False
-    # 声明数据库查询对象
-    query = QSqlQuery()
-    # 创建表
-    query.exec("create table student(id int primary key, name vchar, sex vchar, age int, deparment vchar)")
-
-    # 添加记录
-    query.exec("insert into student values(1,'张三1','男',20,'计算机')")
-    query.exec("insert into student values(2,'李四1','男',19,'经管')")
-    query.exec("insert into student values(3,'王五1','男',22,'机械')")
-    query.exec("insert into student values(4,'赵六1','男',21,'法律')")
-    query.exec("insert into student values(5,'小明1','男',20,'英语')")
-    query.exec("insert into student values(6,'小李1','女',19,'计算机')")
-    query.exec("insert into student values(7,'小张1','男',20,'机械')")
-    query.exec("insert into student values(8,'小刚1','男',19,'经管')")
-    query.exec("insert into student values(9,'张三2','男',21,'计算机')")
-    query.exec("insert into student values(10,'张三3','女',20,'法律')")
-    query.exec("insert into student values(11,'王五2','男',19,'经管')")
-    query.exec("insert into student values(12,'张三4','男',20,'计算机')")
-    query.exec("insert into student values(13,'小李2','男',20,'机械')")
-    query.exec("insert into student values(14,'李四2','女',19,'经管')")
-    query.exec("insert into student values(15,'赵六3','男',21,'英语')")
-    query.exec("insert into student values(16,'李四2','男',19,'法律')")
-    query.exec("insert into student values(17,'小张2','女',22,'经管')")
-    query.exec("insert into student values(18,'李四3','男',21,'英语')")
-    query.exec("insert into student values(19,'小李3','女',19,'法律')")
-    query.exec("insert into student values(20,'王五3','女',20,'机械')")
-    query.exec("insert into student values(21,'张三4','男',22,'计算机')")
-    query.exec("insert into student values(22,'小李2','男',20,'法律')")
-    query.exec("insert into student values(23,'张三5','男',19,'经管')")
-    query.exec("insert into student values(24,'小张3','女',20,'计算机')")
-    query.exec("insert into student values(25,'李四4','男',22,'英语')")
-    query.exec("insert into student values(26,'赵六2','男',20,'机械')")
-    query.exec("insert into student values(27,'小李3','女',19,'英语')")
-    query.exec("insert into student values(28,'王五4','男',21,'经管')")
-    db.close()
-    return True
 
 class DataGrid(QWidget):
     isConnected=False
@@ -173,7 +131,9 @@ class DataGrid(QWidget):
         # 表格宽度的自适应调整
         self.tableView.horizontalHeader().setStretchLastSection(True)
         self.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-
+        # self.tableView.setDropIndicatorShown(True);
+        self.tableView.horizontalHeader().setSectionsMovable(True);#列移动
+        self.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)#手动调节列宽
         # 创建界面
         mainLayout = QVBoxLayout(self);
         mainLayout.addLayout(operatorLayout);
@@ -183,17 +143,11 @@ class DataGrid(QWidget):
 
     # 设置表格
     def setTableView(self):
-        print('*** step2 SetTableView')
-        # self.db = QSqlDatabase.addDatabase('QSQLITE')
-        # # 设置数据库名称
-        # self.db.setDatabaseName('./db/database.db')
-        # # 打开数据库
-        # self.db.open()
 
         OrcConStr='11.11.48.64/1521/gxcsdb2/cwbase2_9999/gxtest8888'
         self.connectDB(OrcConStr)
         self.sql="""
-                    SELECT CTN_ID,MDL_ID FROM SYS_MDL_CTN WHERE MDL_ID 
+                    SELECT * FROM SYS_MDL_CTN WHERE MDL_ID 
                     =(SELECT F_YWMX FROM SAFWML WHERE F_BH IN 
                     (select F_FWML from sadjall where F_DJBH='BX30111002020121500058'))
                 
@@ -207,61 +161,38 @@ class DataGrid(QWidget):
         # sql = "UPDATE goods_detail SET productPrice = %s,productName = %s,stock = %s where  url = %s"
         # cursor.execute(sql,(GoodsDetailPrice,NewGoodsName,Stock, NewGoodsUrl))
 
-        data = self.con.Query(self.sql)
+        self.data = self.con.Query(self.sql)
         # cur=self.con.cursor()
         # cur.execute(self.sql)
+        if(len(self.data)>0):
+            self.model=QStandardItemModel(len(self.data),len(self.data[0]))#设置行列
+            self.model.setHorizontalHeaderLabels(self.data[0].keys())#设置列名
+            rowcount = 0
+            for row in self.data:
+                itemcount = 0
+                for item in row.values():
+                    self.model.setItem(rowcount,itemcount,QStandardItem(str(item)))
+                    # self.tableView.item(rowcount,itemcount).setFlags(Qt.ItemIsSelectable)
+                    itemcount = itemcount+1
+                rowcount=rowcount+1
 
-        self.model=QStandardItemModel(len(data),len(data[0]))
+            self.tableView.setModel(self.model)
 
-        title=['物料编号','基本单位']
-        #
-        self.model.setHorizontalHeaderLabels(title)
-
-        # self.tableView=QTableView()
-
-        ndata=data
-        print(ndata[0].keys())
-        print(ndata[0].values())
-        # item1=QStandardItem('000')
-        # item2=QStandardItem('111')
-        # self.model.setItem(0,0,item1)
-        # self.model.setItem(0,1,item2)
-        # for row,linedata in enumerate(ndata):
-        #
-        #     for col,itemdata in enumerate(linedata):
-        #         print (col, itemdata)
-        #         if itemdata!=None:
-        #             item=QStandardItem(str(itemdata))
-        #             # print(str(itemdata))
-        #         else :
-        #             QStandardItem('')
-        #
-        #         self.model.setItem(row,col,item)
-        rowcount = 0
-        for row in data:
-            itemcount = 0
-            for item in row.values():
-                self.model.setItem(rowcount,itemcount,QStandardItem(str(item)))
-                # self.tableView.item(rowcount,itemcount).setFlags(Qt.ItemIsSelectable)
-                itemcount = itemcount+1
-            rowcount=rowcount+1
-
-        self.tableView.setModel(self.model)
 
         # 声明查询模型
         # self.queryModel = QSqlQueryModel(self)
         # 设置当前页
-        # self.currentPage = 1;
-        # # 得到总记录数
-        # self.totalRecrodCount = self.getTotalRecordCount()
-        # # 得到总页数
-        # self.totalPage = self.getPageCount()
-        # # 刷新状态
-        # self.updateStatus()
-        # # 设置总页数文本
-        # self.setTotalPageLabel()
-        # # 设置总记录数
-        # self.setTotalRecordLabel()
+        self.currentPage = 1;
+        # 得到总记录数
+        self.totalRecrodCount = len(self.data)
+        # 得到总页数
+        self.totalPage = self.getPageCount()
+        # 刷新状态
+        self.updateStatus()
+        # 设置总页数文本
+        self.setTotalPageLabel()
+        # 设置总记录数
+        self.setTotalRecordLabel()
         #
         # # 记录查询
         # self.recordQuery(0)
@@ -295,10 +226,32 @@ class DataGrid(QWidget):
             return (self.totalRecrodCount / self.PageRecordCount + 1)
 
     # 记录查询
-    def recordQuery(self, limitIndex):
-        szQuery = ("select * from student limit %d,%d" % (limitIndex, self.PageRecordCount))
+    def recordQuery(self, page):
+        szQuery = ("""
+        SELECT * FROM (
+                    SELECT ROWNUM AS rowno,t.* FROM SYS_MDL_CTN t WHERE MDL_ID 
+                    =(SELECT F_YWMX FROM SAFWML WHERE F_BH IN 
+                    (select F_FWML from sadjall where F_DJBH='BX30111002020121500058')) and ROWNUM <= %d
+                    ) table_alias WHERE table_alias.rowno >= %d
+        
+        """ % (page*self.PageRecordCount, (page*self.PageRecordCount-self.PageRecordCount)+1))
         print('query sql=' + szQuery)
-        self.queryModel.setQuery(szQuery)
+        self.data = self.con.Query(szQuery)
+        # cur=self.con.cursor()
+        # cur.execute(self.sql)
+        if(len(self.data)>0):
+            self.model=QStandardItemModel(len(self.data),len(self.data[0]))#设置行列
+            self.model.setHorizontalHeaderLabels(self.data[0].keys())#设置列名
+            rowcount = 0
+            for row in self.data:
+                itemcount = 0
+                for item in row.values():
+                    self.model.setItem(rowcount,itemcount,QStandardItem(str(item)))
+                    # self.tableView.item(rowcount,itemcount).setFlags(Qt.ItemIsSelectable)
+                    itemcount = itemcount+1
+                rowcount=rowcount+1
+
+            self.tableView.setModel(self.model)
 
     # 刷新状态
     def updateStatus(self):
@@ -331,15 +284,18 @@ class DataGrid(QWidget):
     def onPrevButtonClick(self):
         print('*** onPrevButtonClick ');
         limitIndex = (self.currentPage - 2) * self.PageRecordCount
-        self.recordQuery(limitIndex)
+        self.recordQuery(self.currentPage-1)
         self.currentPage -= 1
         self.updateStatus()
 
     # 后一页按钮按下
     def onNextButtonClick(self):
         print('*** onNextButtonClick ');
-        limitIndex = self.currentPage * self.PageRecordCount
-        self.recordQuery(limitIndex)
+        # if(self.currentPage!=1):
+        #     limitIndex = self.currentPage * self.PageRecordCount
+        # else:
+        self.recordQuery(self.currentPage+1)
+        # self.recordQuery(limitIndex)
         self.currentPage += 1
         self.updateStatus()
 
@@ -378,15 +334,13 @@ class DataGrid(QWidget):
         # 刷新状态
         self.updateStatus();
 
-    def __del__(self):
-        pass
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    if createTableAndInit():
-        # 创建窗口
-        example = DataGrid()
-        # 显示窗口
-        example.show()
+
+    # 创建窗口
+    example = DataGrid()
+    # 显示窗口
+    example.show()
 
     sys.exit(app.exec_())
