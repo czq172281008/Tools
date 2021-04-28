@@ -1,5 +1,6 @@
 import sys
 import re
+from math import ceil
 
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import (QWidget, QHBoxLayout, QVBoxLayout, QApplication, QPushButton, QLineEdit, QLabel, QSplitter,
@@ -146,7 +147,7 @@ class DataGrid(QWidget):
 
         OrcConStr='11.11.48.64/1521/gxcsdb2/cwbase2_9999/gxtest8888'
         self.connectDB(OrcConStr)
-        self.sql="""
+        self.paraSql="""
                     SELECT * FROM SYS_MDL_CTN WHERE MDL_ID 
                     =(SELECT F_YWMX FROM SAFWML WHERE F_BH IN 
                     (select F_FWML from sadjall where F_DJBH='BX30111002020121500058'))
@@ -161,22 +162,22 @@ class DataGrid(QWidget):
         # sql = "UPDATE goods_detail SET productPrice = %s,productName = %s,stock = %s where  url = %s"
         # cursor.execute(sql,(GoodsDetailPrice,NewGoodsName,Stock, NewGoodsUrl))
 
-        self.data = self.con.Query(self.sql)
+        self.data = self.con.Query(self.paraSql)
         # cur=self.con.cursor()
         # cur.execute(self.sql)
-        if(len(self.data)>0):
-            self.model=QStandardItemModel(len(self.data),len(self.data[0]))#设置行列
-            self.model.setHorizontalHeaderLabels(self.data[0].keys())#设置列名
-            rowcount = 0
-            for row in self.data:
-                itemcount = 0
-                for item in row.values():
-                    self.model.setItem(rowcount,itemcount,QStandardItem(str(item)))
-                    # self.tableView.item(rowcount,itemcount).setFlags(Qt.ItemIsSelectable)
-                    itemcount = itemcount+1
-                rowcount=rowcount+1
-
-            self.tableView.setModel(self.model)
+        # if(len(self.data)>0):
+        #     self.model=QStandardItemModel(len(self.data),len(self.data[0]))#设置行列
+        #     self.model.setHorizontalHeaderLabels(self.data[0].keys())#设置列名
+        #     rowcount = 0
+        #     for row in self.data:
+        #         itemcount = 0
+        #         for item in row.values():
+        #             self.model.setItem(rowcount,itemcount,QStandardItem(str(item)))
+        #             # self.tableView.item(rowcount,itemcount).setFlags(Qt.ItemIsSelectable)
+        #             itemcount = itemcount+1
+        #         rowcount=rowcount+1
+        #
+        #     self.tableView.setModel(self.model)
 
 
         # 声明查询模型
@@ -195,7 +196,7 @@ class DataGrid(QWidget):
         self.setTotalRecordLabel()
         #
         # # 记录查询
-        # self.recordQuery(0)
+        self.recordQuery(1)
         # 设置模型
         # self.tableView.setModel(self.queryModel)
         # self.tableView.setModel(self.model)
@@ -212,7 +213,9 @@ class DataGrid(QWidget):
 
     # 得到记录数
     def getTotalRecordCount(self):
-        self.queryModel.setQuery("select * from student")
+        self.queryModel.setQuery("""
+        select * from student
+        """)
         # self.queryModel.setQuery(self.sql)
         rowCount = self.queryModel.rowCount()
         print('rowCount=' + str(rowCount))
@@ -223,17 +226,17 @@ class DataGrid(QWidget):
         if self.totalRecrodCount % self.PageRecordCount == 0:
             return (self.totalRecrodCount / self.PageRecordCount)
         else:
-            return (self.totalRecrodCount / self.PageRecordCount + 1)
+            return ceil((self.totalRecrodCount / self.PageRecordCount))#向上取整数
 
     # 记录查询
     def recordQuery(self, page):
         szQuery = ("""
-        SELECT * FROM (
-                    SELECT ROWNUM AS rowno,t.* FROM SYS_MDL_CTN t WHERE MDL_ID 
-                    =(SELECT F_YWMX FROM SAFWML WHERE F_BH IN 
-                    (select F_FWML from sadjall where F_DJBH='BX30111002020121500058')) and ROWNUM <= %d
-                    ) table_alias WHERE table_alias.rowno >= %d
-        
+                SELECT * FROM (SELECT embodySQL.*, ROWNUM beginROWNUM
+                          FROM (SELECT * FROM SYS_MDL_CTN t WHERE MDL_ID 
+                                    =(SELECT F_YWMX FROM SAFWML WHERE F_BH IN 
+                                    (select F_FWML from sadjall where F_DJBH='BX30111002020121500058')))  embodySQL
+                         WHERE ROWNUM <= %d)
+                 WHERE beginROWNUM >= %d
         """ % (page*self.PageRecordCount, (page*self.PageRecordCount-self.PageRecordCount)+1))
         print('query sql=' + szQuery)
         self.data = self.con.Query(szQuery)
@@ -325,10 +328,10 @@ class DataGrid(QWidget):
             return
 
         # 得到查询起始行号
-        limitIndex = (pageIndex - 1) * self.PageRecordCount
+        # limitIndex = (pageIndex - 1) * self.PageRecordCount
 
         # 记录查询
-        self.recordQuery(limitIndex);
+        self.recordQuery(pageIndex);
         # 设置当前页
         self.currentPage = pageIndex
         # 刷新状态
