@@ -70,15 +70,6 @@ class ControlCode(QWidget,Ui_Form):#继承QTDesigner绘制窗体文件单独页�
             self.tableView = QTableView()
 
 
-            rowcount = 0
-            for row in data:
-                itemcount = 0
-                for item in row.values():
-                    self.tableView.QStandardItem(rowcount,itemcount,QtWidgets.QTableWidgetItem(str(item)))
-                    self.tableView.item(rowcount,itemcount).setFlags(Qt.ItemIsSelectable)
-                    itemcount = itemcount+1
-                rowcount=rowcount+1
-
             widget = DataGrid(Ora_ip,Ora_port,Ora_user,Ora_password,Ora_sname,OrcConStr)
             # self.widget.setGeometry(10, 10, 380, 240)
             self.layout.addWidget(widget)
